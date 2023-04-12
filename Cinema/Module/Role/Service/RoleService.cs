@@ -2,6 +2,7 @@
 using Cinema.Model;
 using Cinema.Module.Role.DTO;
 using Cinema.Module.Role.Repository;
+using System.Transactions;
 
 namespace Cinema.Module.Role.Service
 {

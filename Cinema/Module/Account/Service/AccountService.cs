@@ -6,9 +6,11 @@ using Cinema.Module.Account.Repository;
 using Cinema.Module.Role.Service;
 using Cinema.Module.User.DTO;
 using Cinema.Module.User.Service;
+using System.Transactions;
 
 namespace Cinema.Module.Account.Service
 {
+
     public class AccountService : IAccountService
     {
 
@@ -40,9 +42,10 @@ namespace Cinema.Module.Account.Service
             _accountRepository.UpdateAccount(accountModel);
         }
 
-        public AccountDTO GetAccount(string username)
+        public AccountDTO GetAccount(string email)
         {
-            AccountModel accountModel = _accountRepository.GetAccount(username);
+            AccountModel accountModel = _accountRepository.GetAccount(email);
+            if (accountModel == null) return null;
             AccountDTO accountDTO = _mapper.Map<AccountDTO>(accountModel);
             accountDTO.RoleName = accountModel.Role.Name;
             return accountDTO;

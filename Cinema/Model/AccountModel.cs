@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Cinema.Enum;
+using System.Reflection;
 
 namespace Cinema.Model
 {
@@ -16,6 +17,7 @@ namespace Cinema.Model
 
         public string Password { get; set; }
 
+        [EnumDataType(typeof(AccountStatus))]
         public AccountStatus accountStatus { get; set; }
 
         public int RoleId { get; set; }

@@ -30,7 +30,13 @@ namespace Cinema.Module.Account.Repository
 
         public AccountModel GetAccount(string email)
         {
-            return _context.Accounts.Include(p => p.Role).Where(p => p.Email == email).Single();
+            try
+            {
+                return _context.Accounts.Include(p => p.Role).Where(p => p.Email == email).Single();
+            }catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         public AccountModel GetAccount(int id)
@@ -40,7 +46,7 @@ namespace Cinema.Module.Account.Repository
 
         public List<AccountModel> GetAllAccounts()
         {
-            return _context.Accounts.ToList();
+            return _context.Accounts.Include(p => p.Role).ToList();
         }
 
         public AccountModel Login(LoginData loginData)

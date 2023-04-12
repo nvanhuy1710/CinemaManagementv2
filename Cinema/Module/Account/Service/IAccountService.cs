@@ -10,7 +10,7 @@ namespace Cinema.Module.Account.Service
     {
         AccountDTO Login(LoginData loginData);
 
-        AccountDTO GetAccount(string username);
+        AccountDTO GetAccount(string email);
 
         AccountDTO GetAccount(int id);
 

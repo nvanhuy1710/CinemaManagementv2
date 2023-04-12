@@ -8,6 +8,7 @@ using Cinema.Module.Role.Repository;
 using Cinema.Module.Role.Service;
 using Cinema.Module.User.DTO;
 using Cinema.Module.User.Repository;
+using System.Transactions;
 
 namespace Cinema.Module.User.Service
 {
@@ -29,7 +30,11 @@ namespace Cinema.Module.User.Service
 
         public UserDTO AddUser(UserDTO userDTO)
         {
-            return _mapper.Map<UserDTO>(_userRepository.AddUser(_mapper.Map<UserModel>(userDTO)));
+            UserModel userModel =  _userRepository.AddUser(_mapper.Map<UserModel>(userDTO));
+            UserDTO result = _mapper.Map<UserDTO>(userModel);
+            result.Email = userDTO.Email;
+            return result;
+
         }
 
         public UserDTO UpdateUser(UserDTO userDTO)
@@ -71,25 +76,21 @@ namespace Cinema.Module.User.Service
 
         public UserDTO Register(RegisterData registerData)
         {
+            if(_accountService.GetAccount(registerData.Email) != null)
+            {
+                return null;
+            }
             AccountDTO accountDTO = new AccountDTO
             {
                 Email = registerData.Email,
                 Password = registerData.Password,
                 RoleName = registerData.Role,
             };
-            List<AccountDTO> accountDTOs = _accountService.GetAllAccounts();
-            foreach(AccountDTO dto in accountDTOs)
-            {
-                if(registerData.Email == dto.Email)
-                {
-                    return null;
-                }
-            }
             AccountDTO account = _accountService.AddAccount(accountDTO);
             UserDTO userDTO = AddUser(new UserDTO
             {
                 Name = registerData.Name,
-                Email = registerData.Email,
+                Email = account.Email,
                 Gender = registerData.Gender,
                 Birth = registerData.Birth.Date,
                 Phone = registerData.Phone,
