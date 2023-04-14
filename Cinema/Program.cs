@@ -10,6 +10,8 @@ using Cinema.Module.User.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +35,18 @@ builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
 {
     build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
 //Add Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -76,7 +90,8 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("MyCors");
 app.UseHttpsRedirection();
-
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
