@@ -18,6 +18,6 @@ namespace Cinema.Module.User.DTO
 
         public string? Address { get; set; }
 
-        public int AccountId { get; set; }
+        public string RoleName { get; set; }
     }
 }

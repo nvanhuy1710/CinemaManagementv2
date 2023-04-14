@@ -11,8 +11,6 @@ namespace Cinema.Module.User.Service
 
         UserDTO GetUserByEmail(string username);
 
-        UserDTO AddUser(UserDTO userDTO);
-
         UserDTO UpdateUser(UserDTO userDTO);
 
         UserDTO Register(RegisterData registerData);

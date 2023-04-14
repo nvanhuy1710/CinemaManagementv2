@@ -29,18 +29,13 @@ namespace Cinema.Module.User.Service
             _accountService = accountService;
         }
 
-        public UserDTO AddUser(UserDTO userDTO)
-        {
-            UserModel userModel =  _userRepository.AddUser(_mapper.Map<UserModel>(userDTO));
-            UserDTO result = _mapper.Map<UserDTO>(userModel);
-            result.Email = userDTO.Email;
-            return result;
-
-        }
-
         public UserDTO UpdateUser(UserDTO userDTO)
         {
-            return _mapper.Map<UserDTO>(_userRepository.UpdateUser(_mapper.Map<UserModel>(userDTO)));
+            UserModel newUser = _userRepository.UpdateUser(_mapper.Map<UserModel>(userDTO));
+            UserDTO user = _mapper.Map<UserDTO>(newUser);
+            user.RoleName = userDTO.RoleName;
+            user.Email = newUser.Account.Email;
+            return user;
         }
 
         public void DeleteUser(int id)
@@ -54,6 +49,7 @@ namespace Cinema.Module.User.Service
                 .Select(user => {
                     UserDTO userDTO = _mapper.Map<UserDTO>(user);
                     userDTO.Email = _accountService.GetAccount(user.AccountId).Email;
+                    userDTO.RoleName = _accountService.GetAccount(user.AccountId).RoleName;
                     return userDTO;
                     })
                 .ToList();
@@ -88,16 +84,17 @@ namespace Cinema.Module.User.Service
                 RoleName = registerData.Role,
             };
             AccountDTO account = _accountService.AddAccount(accountDTO);
-            UserDTO userDTO = AddUser(new UserDTO
+            UserModel userModel = new UserModel
             {
                 Name = registerData.Name,
-                Email = account.Email,
                 Gender = registerData.Gender,
-                Birth = registerData.Birth.Date,
+                Birth = registerData.Birth,
                 Phone = registerData.Phone,
                 Address = registerData.Address,
                 AccountId = account.Id,
-            });
+            };
+            UserDTO userDTO = _mapper.Map<UserDTO>(_userRepository.AddUser(userModel));
+            userDTO.RoleName = registerData.Role;
             return userDTO;
         }
     }

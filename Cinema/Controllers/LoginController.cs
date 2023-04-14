@@ -73,6 +73,16 @@ namespace Cinema.Controllers
             return Ok(userDTO);
         }
 
+        [Route("/users")]
+        [Authorize]
+        [HttpPut]
+        public ActionResult UpdateUser([FromBody] UserDTO userDTO)
+        {
+            var newUserDTO = _userService.UpdateUser(userDTO);
+            return Ok(newUserDTO);
+
+        }
+
         private UserDTO GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

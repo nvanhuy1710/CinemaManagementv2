@@ -18,7 +18,6 @@ namespace Cinema.Model
 
         public string Password { get; set; }
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
         [EnumDataType(typeof(AccountStatus))]
         public AccountStatus AccountStatus { get; set; }
 

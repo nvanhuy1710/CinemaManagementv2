@@ -53,7 +53,8 @@ namespace Cinema.Module.Account.Repository
         {
             try
             {
-                return _context.Accounts.Include(p => p.Role).Where(p => p.Email == loginData.Email && p.Password == loginData.Password).Single();
+                AccountModel accountModel =  _context.Accounts.Include(p => p.Role).Where(p => p.Email == loginData.Email && p.Password == loginData.Password).Single();
+                return accountModel;
             }
             catch (Exception ex)
             {

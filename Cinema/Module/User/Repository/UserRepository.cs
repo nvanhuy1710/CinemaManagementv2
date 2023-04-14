@@ -1,5 +1,6 @@
 ﻿using Cinema.Data;
 using Cinema.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Module.User.Repository
 {
@@ -20,9 +21,18 @@ namespace Cinema.Module.User.Repository
 
         public UserModel UpdateUser(UserModel user)
         {
-            UserModel userModel = _context.Users.Update(user).Entity;
-            _context.SaveChanges();
-            return userModel;
+            UserModel oldUser = _context.Users.Include(p => p.Account).FirstOrDefault(p => p.Id == user.Id);
+            if(oldUser != null)
+            {
+                oldUser.Name = user.Name;
+                oldUser.Gender = user.Gender;
+                oldUser.Address = user.Address;
+                oldUser.Birth = user.Birth;
+                oldUser.Phone = user.Phone;
+                _context.Users.Update(oldUser);
+                _context.SaveChanges();
+            }
+            return oldUser;
         }
 
         public void DeleteUser(int id)
