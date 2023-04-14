@@ -61,13 +61,16 @@ namespace Cinema.Module.User.Service
             UserModel userModel = _userRepository.GetUser(id);
             UserDTO userDTO = _mapper.Map<UserDTO>(userModel);
             userDTO.Email = _accountService.GetAccount(userModel.AccountId).Email;
+            userDTO.RoleName = _accountService.GetAccount(userModel.AccountId).RoleName;
             return userDTO;
         }
 
         public UserDTO GetUserByEmail(string email)
         {
-            UserDTO userDTO = _mapper.Map<UserDTO>(_userRepository.GetUserByEmail(email));
+            UserModel userModel = _userRepository.GetUserByEmail(email);
+            UserDTO userDTO = _mapper.Map<UserDTO>(userModel);
             userDTO.Email = email;
+            userDTO.RoleName = _accountService.GetAccount(userModel.AccountId).RoleName;
             return userDTO;
         }
 
