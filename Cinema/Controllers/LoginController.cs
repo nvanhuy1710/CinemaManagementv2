@@ -39,6 +39,7 @@ namespace Cinema.Controllers
         [HttpPost]
         public ActionResult Login([FromBody] LoginData loginData)
         {
+            loginData.Password = HashPassword.HashByPBKDF2(loginData.Password);
             var account = _accountService.Login(loginData);
             if (account != null)
             {
@@ -53,6 +54,7 @@ namespace Cinema.Controllers
         [HttpPost]
         public ActionResult Register([FromBody] RegisterData RegisterData)
         {
+            RegisterData.Password = HashPassword.HashByPBKDF2(RegisterData.Password);
             var userDTO = _userService.Register(RegisterData);
             if (userDTO == null) return BadRequest("Email already exist");
             return Ok(userDTO);
