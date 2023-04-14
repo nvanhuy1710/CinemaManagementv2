@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Cinema.Enum;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Cinema.Model
 {
@@ -17,8 +18,9 @@ namespace Cinema.Model
 
         public string Password { get; set; }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         [EnumDataType(typeof(AccountStatus))]
-        public AccountStatus accountStatus { get; set; }
+        public AccountStatus AccountStatus { get; set; }
 
         public int RoleId { get; set; }
 

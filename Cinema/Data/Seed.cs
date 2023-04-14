@@ -26,9 +26,9 @@ namespace Cinema.Data
             {
                 dataContext.Accounts.AddRange(new AccountModel[]
                 {
-                    new AccountModel() {Email = "User@gmail.com", Password = "user", accountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "USER").Select(p => p.Id).Single())},
-                    new AccountModel() {Email = "Admin@gmail.com", Password = "admin", accountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "ADMIN").Select(p => p.Id).Single())},
-                    new AccountModel() {Email = "Staff@gmail.com", Password = "staff", accountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "STAFF").Select(p => p.Id).Single())},
+                    new AccountModel() {Email = "User@gmail.com", Password = "user", AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "USER").Select(p => p.Id).Single())},
+                    new AccountModel() {Email = "Admin@gmail.com", Password = "admin", AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "ADMIN").Select(p => p.Id).Single())},
+                    new AccountModel() {Email = "Staff@gmail.com", Password = "staff", AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "STAFF").Select(p => p.Id).Single())},
                 });
                 dataContext.SaveChanges();
             }

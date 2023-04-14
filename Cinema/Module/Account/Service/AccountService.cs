@@ -31,14 +31,14 @@ namespace Cinema.Module.Account.Service
         {
             AccountModel accountModel = _mapper.Map<AccountModel>(account);
             accountModel.RoleId = _roleService.getRoleByName(account.RoleName).Id;
-            accountModel.accountStatus = Enum.AccountStatus.ACTIVATED;
+            accountModel.AccountStatus = Enum.AccountStatus.ACTIVATED;
             return _mapper.Map<AccountDTO>(_accountRepository.AddAccount(accountModel));
         }
 
         public void DeleteAccount(int id)
         {
             AccountModel accountModel = _accountRepository.GetAccount(id);
-            accountModel.accountStatus = Enum.AccountStatus.DELETED;
+            accountModel.AccountStatus = Enum.AccountStatus.DELETED;
             _accountRepository.UpdateAccount(accountModel);
         }
 

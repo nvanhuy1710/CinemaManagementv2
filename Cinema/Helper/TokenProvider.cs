@@ -1,6 +1,7 @@
 ﻿using Cinema.Module.Account.Repository;
 using Cinema.Module.User.Service;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -17,18 +18,15 @@ namespace Cinema.Helper
             _config = config;
         }
 
-        public string GenerateToken(string username, List<string> roles)
+        public string GenerateToken(string email, string role)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, username),
+                new Claim(ClaimTypes.NameIdentifier, email),
+                new Claim(ClaimTypes.Role, role),
             };
-            foreach (string role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 claims,
@@ -37,7 +35,6 @@ namespace Cinema.Helper
 
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-
         }
     }
 }

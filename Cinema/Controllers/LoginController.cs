@@ -1,4 +1,5 @@
-﻿using Cinema.Model;
+﻿using Cinema.Helper;
+using Cinema.Model;
 using Cinema.Module.Account.DTO;
 using Cinema.Module.Account.Register;
 using Cinema.Module.Account.Repository;
@@ -24,13 +25,13 @@ namespace Cinema.Controllers
 
         private readonly IAccountService _accountService;
 
-        private readonly IConfiguration _config;
+        private readonly TokenProvider _tokenProvider;
 
-        public LoginController(IUserService userService, IAccountService accountService, IConfiguration config)
+        public LoginController(IUserService userService, IAccountService accountService, TokenProvider tokenProvider)
         {
             _userService = userService;
             _accountService = accountService;
-            _config = config;
+            _tokenProvider = tokenProvider;
         }
 
         [Route("/login")]
@@ -41,10 +42,9 @@ namespace Cinema.Controllers
             var account = _accountService.Login(loginData);
             if (account != null)
             {
-                var token = GenerateToken(account.Email, account.RoleName);
-                return Ok(token);
+                var token = _tokenProvider.GenerateToken(account.Email, account.RoleName);
+                return Ok(new { accessToken = token });
             }
-
             return NotFound();
         }
 
@@ -71,26 +71,6 @@ namespace Cinema.Controllers
             }
 
             return Ok(userDTO);
-        }
-
-        private string GenerateToken(string username, string role)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, username),
-                new Claim(ClaimTypes.Role, role),
-            };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
-                claims,
-                expires: DateTime.Now.AddMinutes(15),
-                signingCredentials: credentials);
-
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-
         }
 
         private UserDTO GetCurrentUser()

@@ -8,6 +8,7 @@ using Cinema.Module.Role.Repository;
 using Cinema.Module.Role.Service;
 using Cinema.Module.User.DTO;
 using Cinema.Module.User.Repository;
+using System.Security.Claims;
 using System.Transactions;
 
 namespace Cinema.Module.User.Service
