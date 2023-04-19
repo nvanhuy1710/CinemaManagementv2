@@ -15,5 +15,14 @@ namespace Cinema.Data
         public DbSet<UserModel> Users { get; set; }
 
         public DbSet<RoleModel> Roles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<AccountModel>()
+                .Property(u => u.AccountStatus)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+        }
     }
 }

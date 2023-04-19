@@ -39,7 +39,7 @@ namespace Cinema.Controllers
         [HttpPost]
         public ActionResult Login([FromBody] LoginData loginData)
         {
-            /*loginData.Password = HashPassword.HashByPBKDF2(loginData.Password);*/
+            loginData.Password = HashPassword.HashByPBKDF2(loginData.Password);
             var account = _accountService.Login(loginData);
             if (account != null)
             {
