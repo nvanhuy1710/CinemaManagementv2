@@ -39,14 +39,16 @@ namespace Cinema.Controllers
         [HttpPost]
         public ActionResult Login([FromBody] LoginData loginData)
         {
-            loginData.Password = HashPassword.HashByPBKDF2(loginData.Password);
-            var account = _accountService.Login(loginData);
-            if (account != null)
+            try
             {
+                loginData.Password = HashPassword.HashByPBKDF2(loginData.Password);
+                var account = _accountService.Login(loginData);
                 var token = _tokenProvider.GenerateToken(account.Email, account.RoleName);
                 return Ok(new { accessToken = token });
+            } catch (InvalidOperationException)
+            {
+                return Unauthorized();
             }
-            return NotFound();
         }
 
         [Route("/register")]
@@ -57,7 +59,7 @@ namespace Cinema.Controllers
             RegisterData.Password = HashPassword.HashByPBKDF2(RegisterData.Password);
             var userDTO = _userService.Register(RegisterData);
             if (userDTO == null) return BadRequest("Email already exist");
-            return Ok(userDTO);
+            return CreatedAtAction("Register", userDTO);
         }
 
         [Route("/users")]
@@ -71,7 +73,6 @@ namespace Cinema.Controllers
             {
                 return NotFound();
             }
-
             return Ok(userDTO);
         }
 
@@ -80,9 +81,14 @@ namespace Cinema.Controllers
         [HttpPut]
         public ActionResult UpdateUser([FromBody] UserDTO userDTO)
         {
-            var newUserDTO = _userService.UpdateUser(userDTO);
-            return Ok(newUserDTO);
-
+            //try
+            //{
+                var newUserDTO = _userService.UpdateUser(userDTO);
+                return Ok(newUserDTO);
+            //} catch (Exception)
+            //{
+            //    return NotFound("Invalid RoleName");
+            //}
         }
 
         private UserDTO GetCurrentUser()

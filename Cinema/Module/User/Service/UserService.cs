@@ -31,7 +31,10 @@ namespace Cinema.Module.User.Service
 
         public UserDTO UpdateUser(UserDTO userDTO)
         {
-            UserModel newUser = _userRepository.UpdateUser(_mapper.Map<UserModel>(userDTO));
+            AccountDTO account = _accountService.GetAccount(userDTO.Email);
+            account.RoleName = userDTO.RoleName;
+            _accountService.UpdateAccount(account);
+            UserModel newUser = _userRepository.UpdateUser(_mapper.Map<UserModel>(userDTO));   
             UserDTO user = _mapper.Map<UserDTO>(newUser);
             user.RoleName = userDTO.RoleName;
             user.Email = newUser.Account.Email;
@@ -40,7 +43,7 @@ namespace Cinema.Module.User.Service
 
         public void DeleteUser(int id)
         {
-            _userRepository.DeleteUser(id);
+            _accountService.DeleteAccount(_accountService.GetAccount(GetUser(id).Email).Id);
         }
 
         public List<UserDTO> GetAllUsers()

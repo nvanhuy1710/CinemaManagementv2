@@ -24,8 +24,4 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.28.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Module\User\Register\" />
-  </ItemGroup>
-
 </Project>

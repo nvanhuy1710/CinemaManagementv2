@@ -79,8 +79,9 @@ namespace Cinema.Module.Account.Service
 
         public AccountDTO UpdateAccount(AccountDTO account)
         {
-            return _mapper.Map<AccountDTO>(_accountRepository
-                .UpdateAccount(_mapper.Map<AccountModel>(account)));
+            AccountModel accountModel = _mapper.Map<AccountModel>(account);
+            accountModel.RoleId = _roleService.getRoleByName(account.RoleName).Id;
+            return _mapper.Map<AccountDTO>(_accountRepository.UpdateAccount(accountModel));
         }
     }
 }

@@ -51,22 +51,17 @@ namespace Cinema.Module.Account.Repository
 
         public AccountModel Login(LoginData loginData)
         {
-            try
-            {
-                AccountModel accountModel =  _context.Accounts.Include(p => p.Role).Where(p => p.Email == loginData.Email && p.Password == loginData.Password).Single();
-                return accountModel;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            AccountModel accountModel =  _context.Accounts.Include(p => p.Role).Where(p => p.Email == loginData.Email && p.Password == loginData.Password).Single();
+            return accountModel;
         }
 
         public AccountModel UpdateAccount(AccountModel account)
         {
-            AccountModel accountModel = _context.Accounts.Update(account).Entity;
+            AccountModel oldAccountModel = _context.Accounts.Where(p => p.Email == account.Email).Single();
+            oldAccountModel.RoleId = account.RoleId;
+            _context.Accounts.Update(oldAccountModel);
             _context.SaveChanges();
-            return accountModel;
+            return oldAccountModel;
         }
 
         public bool validate(AccountModel account)
