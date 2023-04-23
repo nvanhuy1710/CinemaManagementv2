@@ -16,11 +16,23 @@ namespace Cinema.Data
 
         public DbSet<RoleModel> Roles { get; set; }
 
+        public DbSet<FilmModel> Films { get; set; }
+
+        public DbSet<GenreModel> Genres { get; set; }
+
+        public DbSet<FilmGenreModel> FilmGenreModels { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AccountModel>()
                 .Property(u => u.AccountStatus)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<FilmModel>()
+                .Property(u => u.FilmStatus)
                 .HasConversion<string>()
                 .HasMaxLength(50);
         }

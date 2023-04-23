@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Cinema.Model;
 using Cinema.Module.Account.DTO;
+using Cinema.Module.Genre.DTO;
 using Cinema.Module.Role.DTO;
 using Cinema.Module.User.DTO;
 
@@ -19,6 +20,8 @@ namespace Cinema.Helper
             CreateMap<AccountModel, AccountDTO>().ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                                                  .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password)) 
                                                  .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
+            CreateMap<GenreDTO, GenreModel>();
+            CreateMap<GenreModel, GenreDTO>();
         }
     }
 }

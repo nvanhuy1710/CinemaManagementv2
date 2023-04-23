@@ -59,7 +59,7 @@ namespace Cinema.Controllers
             RegisterData.Password = HashPassword.HashByPBKDF2(RegisterData.Password);
             var userDTO = _userService.Register(RegisterData);
             if (userDTO == null) return BadRequest("Email already exist");
-            return CreatedAtAction("Register", userDTO);
+            return Ok();
         }
 
         [Route("/users")]
@@ -81,14 +81,8 @@ namespace Cinema.Controllers
         [HttpPut]
         public ActionResult UpdateUser([FromBody] UserDTO userDTO)
         {
-            //try
-            //{
-                var newUserDTO = _userService.UpdateUser(userDTO);
-                return Ok(newUserDTO);
-            //} catch (Exception)
-            //{
-            //    return NotFound("Invalid RoleName");
-            //}
+            var newUserDTO = _userService.UpdateUser(userDTO);
+            return Ok(newUserDTO);
         }
 
         private UserDTO GetCurrentUser()
