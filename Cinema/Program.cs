@@ -2,6 +2,11 @@ using Cinema.Data;
 using Cinema.Helper;
 using Cinema.Module.Account.Repository;
 using Cinema.Module.Account.Service;
+using Cinema.Module.Film.Repository;
+using Cinema.Module.Film.Service;
+using Cinema.Module.FilmGenre.Repository;
+using Cinema.Module.Genre.Repository;
+using Cinema.Module.Genre.Service;
 using Cinema.Module.Role.Repository;
 using Cinema.Module.Role.Repository.Impl;
 using Cinema.Module.Role.Service;
@@ -13,12 +18,16 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+{
+    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 builder.Services.AddTransient<Seed>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -27,6 +36,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IFilmRepository, FilmRepository>();
+builder.Services.AddScoped<IFilmService, FilmService>();
+builder.Services.AddScoped<IFilmGenreRepository, FilmGenreRepository>();
 builder.Services.AddScoped<TokenProvider>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
