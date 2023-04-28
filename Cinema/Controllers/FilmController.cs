@@ -51,7 +51,7 @@ namespace Cinema.Controllers
         }
 
         [Route("/film/{id}")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetFilm(int id)
         {
