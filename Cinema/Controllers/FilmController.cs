@@ -43,7 +43,7 @@ namespace Cinema.Controllers
         }
 
         [Route("/film")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetFilms()
         {
