@@ -20,7 +20,7 @@ namespace Cinema.Controllers
         }
 
         [Route("/film")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult AddFilm()
         {
@@ -43,7 +43,7 @@ namespace Cinema.Controllers
         }
 
         [Route("/film")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetFilms()
         {
@@ -51,7 +51,7 @@ namespace Cinema.Controllers
         }
 
         [Route("/film/{id}")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetFilm(int id)
         {
@@ -59,7 +59,7 @@ namespace Cinema.Controllers
         }
 
         [Route("/film")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         [HttpPut]
         public IActionResult UpdateFilm([FromBody] FilmDTO filmDTO)
         {
@@ -68,7 +68,7 @@ namespace Cinema.Controllers
         }
 
         [Route("/film/poster/{id}")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         [HttpPut]
         public IActionResult UpdatePoster(int id)
         {
@@ -89,7 +89,7 @@ namespace Cinema.Controllers
         }
 
         [Route("/film/{id}")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
         [HttpDelete]
         public IActionResult DeleteFilm(int id)
         {
