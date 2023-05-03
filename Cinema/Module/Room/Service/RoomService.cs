@@ -29,7 +29,7 @@ namespace Cinema.Module.Room.Service
             {
                 throw new InvalidOperationException($"Name: '{room.Name}' existed!");
             }
-            room.RoomStatus = Enum.RoomStatus.DELETED;
+            room.RoomStatus = Enum.RoomStatus.READY;
             RoomDTO roomDTO = _mapper.Map<RoomDTO>(_roomRepository.AddRoom(_mapper.Map<RoomModel>(room)));
             List<SeatDTO> seatDTOs = new List<SeatDTO>();
             foreach (SeatDTO seat in room.Seats)
