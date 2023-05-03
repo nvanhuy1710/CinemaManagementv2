@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Controllers
 {
-    [Route("/api")]
+    [Route("api/")]
     [ApiController]
     [Authorize(Roles = "ADMIN")]
     public class SeatTypeController : ControllerBase
