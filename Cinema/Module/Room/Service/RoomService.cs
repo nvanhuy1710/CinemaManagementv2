@@ -25,6 +25,11 @@ namespace Cinema.Module.Room.Service
 
         public RoomDTO AddRoom(RoomDTO room)
         {
+            if(!CheckExistName(room.Name))
+            {
+                throw new InvalidOperationException($"Name: '{room.Name}' existed!");
+            }
+            room.RoomStatus = Enum.RoomStatus.READY;
             RoomDTO roomDTO = _mapper.Map<RoomDTO>(_roomRepository.AddRoom(_mapper.Map<RoomModel>(room)));
             foreach(SeatDTO seat in roomDTO.Seats)
             {
@@ -61,7 +66,20 @@ namespace Cinema.Module.Room.Service
 
         public RoomDTO UpdateRoom(RoomDTO room)
         {
+            if (!CheckExistName(room.Name))
+            {
+                throw new InvalidOperationException($"Name: '{room.Name}' existed!");
+            }
             throw new NotImplementedException();
+        }
+
+        private bool CheckExistName(string name)
+        {
+            if(_roomRepository.GetRoom(name) != null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

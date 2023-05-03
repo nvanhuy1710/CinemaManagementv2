@@ -32,6 +32,19 @@ namespace Cinema.Module.Room.Repository
             return _context.Rooms.Where(p => p.Id == id).Single();
         }
 
+        public RoomModel GetRoom(string roomName)
+        {
+            IEnumerable<RoomModel> roomModels = _context.Rooms.Where(p => p.Name == roomName);
+            if(roomModels.Any())
+            {
+                return roomModels.First();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public List<RoomModel> GetRooms()
         {
             return _context.Rooms.ToList();
