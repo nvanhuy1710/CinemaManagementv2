@@ -22,6 +22,12 @@ namespace Cinema.Data
 
         public DbSet<FilmGenreModel> FilmGenreModels { get; set; }
 
+        public DbSet<RoomModel> Rooms { get; set; }
+
+        public DbSet<SeatModel> Seats { get; set; }
+
+        public DbSet<SeatTypeModel> SeatTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -33,6 +39,12 @@ namespace Cinema.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<FilmModel>()
                 .Property(u => u.FilmStatus)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<RoomModel>()
+                .Property(u => u.RoomStatus)
                 .HasConversion<string>()
                 .HasMaxLength(50);
         }

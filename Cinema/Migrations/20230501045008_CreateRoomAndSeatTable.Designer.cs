@@ -4,6 +4,7 @@ using Cinema.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230501045008_CreateRoomAndSeatTable")]
+    partial class CreateRoomAndSeatTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,36 +198,11 @@ namespace Cinema.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SeatTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("SeatTypeId");
-
                     b.ToTable("Seats");
-                });
-
-            modelBuilder.Entity("Cinema.Model.SeatTypeModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Cost")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SeatType");
                 });
 
             modelBuilder.Entity("Cinema.Model.UserModel", b =>
@@ -301,15 +279,7 @@ namespace Cinema.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cinema.Model.SeatTypeModel", "SeatType")
-                        .WithMany("Seats")
-                        .HasForeignKey("SeatTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Room");
-
-                    b.Navigation("SeatType");
                 });
 
             modelBuilder.Entity("Cinema.Model.UserModel", b =>
@@ -341,11 +311,6 @@ namespace Cinema.Migrations
             modelBuilder.Entity("Cinema.Model.RoomModel", b =>
                 {
                     b.Navigation("SeatModels");
-                });
-
-            modelBuilder.Entity("Cinema.Model.SeatTypeModel", b =>
-                {
-                    b.Navigation("Seats");
                 });
 #pragma warning restore 612, 618
         }
