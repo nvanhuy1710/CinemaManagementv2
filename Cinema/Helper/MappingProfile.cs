@@ -4,6 +4,9 @@ using Cinema.Module.Account.DTO;
 using Cinema.Module.Film.DTO;
 using Cinema.Module.Genre.DTO;
 using Cinema.Module.Role.DTO;
+using Cinema.Module.Room.DTO;
+using Cinema.Module.Seat.DTO;
+using Cinema.Module.SeatType.DTO;
 using Cinema.Module.User.DTO;
 
 namespace Cinema.Helper
@@ -25,6 +28,12 @@ namespace Cinema.Helper
             CreateMap<GenreModel, GenreDTO>();
             CreateMap<FilmDTO, FilmModel>();
             CreateMap<FilmModel, FilmDTO>();
+            CreateMap<RoomDTO, RoomModel>();
+            CreateMap<RoomModel, RoomDTO>();
+            CreateMap<SeatTypeModel, SeatTypeDTO>();
+            CreateMap<SeatTypeDTO, SeatTypeModel>();
+            CreateMap<SeatDTO, SeatModel>();
+            CreateMap<SeatModel, SeatDTO>();
         }
     }
 }

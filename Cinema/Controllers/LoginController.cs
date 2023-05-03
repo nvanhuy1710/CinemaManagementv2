@@ -17,7 +17,7 @@ using System.Text;
 
 namespace Cinema.Controllers
 {
-    [Route("/api")]
+    [Route("api/")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -34,9 +34,8 @@ namespace Cinema.Controllers
             _tokenProvider = tokenProvider;
         }
 
-        [Route("/login")]
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("login")]
         public ActionResult Login([FromBody] LoginData loginData)
         {
             try
@@ -51,9 +50,8 @@ namespace Cinema.Controllers
             }
         }
 
-        [Route("/register")]
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("register")]
         public ActionResult Register([FromBody] RegisterData RegisterData)
         {
             RegisterData.Password = HashPassword.HashByPBKDF2(RegisterData.Password);
@@ -62,9 +60,8 @@ namespace Cinema.Controllers
             return Ok();
         }
 
-        [Route("/users")]
         [Authorize]
-        [HttpGet]
+        [HttpGet("users")]
         public ActionResult GetUser()
         {
             var userDTO = GetCurrentUser();
@@ -76,9 +73,8 @@ namespace Cinema.Controllers
             return Ok(userDTO);
         }
 
-        [Route("/users")]
         [Authorize]
-        [HttpPut]
+        [HttpPut("users")]
         public ActionResult UpdateUser([FromBody] UserDTO userDTO)
         {
             var newUserDTO = _userService.UpdateUser(userDTO);
