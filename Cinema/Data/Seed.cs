@@ -43,6 +43,16 @@ namespace Cinema.Data
                 });
                 dataContext.SaveChanges();
             }
+            if(!dataContext.SeatTypes.Any())
+            {
+                dataContext.SeatTypes.AddRange(new SeatTypeModel[]
+                {
+                    new SeatTypeModel() {Name = "Thường", Cost = 40000,},
+                    new SeatTypeModel() {Name = "VIP", Cost = 50000,},
+                    new SeatTypeModel() {Name = "Đôi", Cost = 70000,},
+                });
+                dataContext.SaveChanges();
+            }
         }
     }
 }
