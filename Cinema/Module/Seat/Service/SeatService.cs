@@ -3,6 +3,7 @@ using Cinema.Helper;
 using Cinema.Model;
 using Cinema.Module.Seat.DTO;
 using Cinema.Module.Seat.Repository;
+using Cinema.Module.SeatType.DTO;
 
 namespace Cinema.Module.Seat.Service
 {
@@ -41,17 +42,36 @@ namespace Cinema.Module.Seat.Service
 
         public SeatDTO GetSeat(int id)
         {
-            return _mapper.Map<SeatDTO>(_seatRepository.GetSeat(id));
+            SeatModel seatModel = _seatRepository.GetSeat(id);
+            SeatDTO seatDTO = _mapper.Map<SeatDTO>(seatModel);
+            seatDTO.SeatTypeDTO = _mapper.Map<SeatTypeDTO>(seatModel.SeatType);
+            return seatDTO;
         }
 
         public List<SeatDTO> GetSeatByRoomId(int roomId)
         {
-            return _seatRepository.GetSeatsByRoomId(roomId).Select(p => _mapper.Map<SeatDTO>(p)).ToList();
+            List<SeatModel> seatModels = _seatRepository.GetSeatsByRoomId(roomId);
+            List<SeatDTO> seatDTOs = new List<SeatDTO>();
+            foreach(SeatModel seatModel in seatModels)
+            {
+                SeatDTO seatDTO = _mapper.Map<SeatDTO>(seatModel);
+                seatDTO.SeatTypeDTO = _mapper.Map<SeatTypeDTO>(seatModel.SeatType);
+                seatDTOs.Add(seatDTO);
+            }
+            return seatDTOs;
         }
 
         public List<SeatDTO> GetSeats()
         {
-            return _seatRepository.GetSeats().Select(p => _mapper.Map<SeatDTO>(p)).ToList();
+            List<SeatModel> seatModels = _seatRepository.GetSeats();
+            List<SeatDTO> seatDTOs = new List<SeatDTO>();
+            foreach (SeatModel seatModel in seatModels)
+            {
+                SeatDTO seatDTO = _mapper.Map<SeatDTO>(seatModel);
+                seatDTO.SeatTypeDTO = _mapper.Map<SeatTypeDTO>(seatModel.SeatType);
+                seatDTOs.Add(seatDTO);
+            }
+            return seatDTOs;
         }
 
         public SeatDTO UpdateSeat(SeatDTO seatDTO)
