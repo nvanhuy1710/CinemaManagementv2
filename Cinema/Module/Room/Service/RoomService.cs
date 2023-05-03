@@ -31,11 +31,13 @@ namespace Cinema.Module.Room.Service
             }
             room.RoomStatus = Enum.RoomStatus.READY;
             RoomDTO roomDTO = _mapper.Map<RoomDTO>(_roomRepository.AddRoom(_mapper.Map<RoomModel>(room)));
-            foreach(SeatDTO seat in roomDTO.Seats)
+            List<SeatDTO> seatDTOs = new List<SeatDTO>();
+            foreach (SeatDTO seat in room.Seats)
             {
                 seat.RoomId = roomDTO.Id;
-                roomDTO.Seats.Add(_seatService.AddSeat(seat));
+                seatDTOs.Add(_seatService.AddSeat(seat));
             }
+            roomDTO.Seats = seatDTOs;
             return roomDTO;
         }
 

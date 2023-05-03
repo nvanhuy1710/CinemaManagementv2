@@ -1,5 +1,6 @@
 ﻿using Cinema.Data;
 using Cinema.Model;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Cinema.Module.Seat.Repository
@@ -28,17 +29,17 @@ namespace Cinema.Module.Seat.Repository
 
         public SeatModel GetSeat(int id)
         {
-            return _context.Seats.Where(p => p.Id == id).Single();
+            return _context.Seats.Include(p => p.SeatType).Where(p => p.Id == id).Single();
         }
 
         public List<SeatModel> GetSeats()
         {
-            return _context.Seats.ToList();
+            return _context.Seats.Include(p => p.SeatType).ToList();
         }
 
         public List<SeatModel> GetSeatsByRoomId(int id)
         {
-            return _context.Seats.Where(p => p.RoomId == id).ToList();
+            return _context.Seats.Include(p => p.SeatType).Where(p => p.RoomId == id).ToList();
         }
 
         public SeatModel UpdateSeat(SeatModel seat)

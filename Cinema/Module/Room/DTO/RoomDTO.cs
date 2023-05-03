@@ -13,7 +13,7 @@ namespace Cinema.Module.Room.DTO
 
         public int Col { get; set; }
 
-        public RoomStatus RoomStatus { get; set; }
+        public RoomStatus? RoomStatus { get; set; }
 
         public List<SeatDTO> Seats { get; set; }
     }
