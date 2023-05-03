@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Controllers
 {
-    [Route("/api")]
+    [Route("api/")]
     [ApiController]
     public class GenreController : ControllerBase
     {
@@ -17,26 +17,23 @@ namespace Cinema.Controllers
             _genreService = genreService;
         }
 
-        [Route("/genre")]
         [Authorize(Roles = "ADMIN")]
-        [HttpPost]
+        [HttpPost("genre")]
         public IActionResult AddGenre([FromBody] GenreDTO genre)
         {
             GenreDTO genreDTO = _genreService.AddGenre(genre);
             return CreatedAtAction(nameof(GetGenre), new {id = genreDTO.Id}, genreDTO);
         }
 
-        [Route("/genre")]
         [Authorize(Roles = "ADMIN")]
-        [HttpGet]
+        [HttpGet("genre")]
         public IActionResult GetGenres()
         {
             return Ok(_genreService.GetGenres());
         }
 
-        [Route("/genre/{id}")]
         [Authorize(Roles = "ADMIN")]
-        [HttpGet]
+        [HttpGet("genre/{id}")]
         public IActionResult GetGenre(int id)
         {
             try
@@ -49,17 +46,15 @@ namespace Cinema.Controllers
             }
         }
 
-        [Route("/genre")]
         [Authorize(Roles = "ADMIN")]
-        [HttpPut]
+        [HttpPut("genre")]
         public IActionResult UpdateGenre(GenreDTO genre)
         {
             return Ok(_genreService.UpdateGenre(genre));
         }
 
-        [Route("/genre")]
         [Authorize(Roles = "ADMIN")]
-        [HttpDelete]
+        [HttpDelete("genre")]
         public IActionResult DeleteGenre(int id)
         {
             _genreService.DeleteGenre(id);

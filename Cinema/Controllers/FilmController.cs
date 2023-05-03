@@ -8,7 +8,7 @@ using System.Data;
 
 namespace Cinema.Controllers
 {
-    [Route("/api")]
+    [Route("api/")]
     [ApiController]
     public class FilmController : ControllerBase
     {
@@ -19,9 +19,8 @@ namespace Cinema.Controllers
             _filmService = filmService;
         }
 
-        [Route("/film")]
-        [AllowAnonymous]
-        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost("film")]
         public IActionResult AddFilm()
         {
             try
@@ -42,34 +41,30 @@ namespace Cinema.Controllers
             }
         }
 
-        [Route("/film")]
         [AllowAnonymous]
-        [HttpGet]
+        [HttpGet("film")]
         public IActionResult GetFilms()
         {
             return Ok(_filmService.GetFilms());
         }
 
-        [Route("/film/{id}")]
         [AllowAnonymous]
-        [HttpGet]
+        [HttpGet("film/{id}")]
         public IActionResult GetFilm(int id)
         {
             return Ok(_filmService.GetFilm(id));
         }
 
-        [Route("/film")]
-        [AllowAnonymous]
-        [HttpPut]
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut("film")]
         public IActionResult UpdateFilm([FromBody] FilmDTO filmDTO)
         {
             var film = _filmService.UpdateFilm(filmDTO);
             return Ok(film);
         }
 
-        [Route("/film/poster/{id}")]
-        [AllowAnonymous]
-        [HttpPut]
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut("film/poster/{id}")]
         public IActionResult UpdatePoster(int id)
         {
             try
@@ -88,9 +83,8 @@ namespace Cinema.Controllers
             }
         }
 
-        [Route("/film/{id}")]
-        [AllowAnonymous]
-        [HttpDelete]
+        [Authorize(Roles = "ADMIN")]
+        [HttpDelete("film/{id}")]
         public IActionResult DeleteFilm(int id)
         {
             _filmService.DeleteFilm(id);

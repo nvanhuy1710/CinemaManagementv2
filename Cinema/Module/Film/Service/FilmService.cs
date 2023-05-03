@@ -32,6 +32,7 @@ namespace Cinema.Module.Film.Service
         }
         public FilmDTO AddFilm(FilmDTO filmDTO)
         {
+            filmDTO.FilmStatus = Enum.FilmStatus.NOSCHEDULED;
             FilmModel model = _filmRepository.AddFilm(_mapper.Map<FilmModel>(filmDTO));
             foreach(GenreDTO genreDTO in filmDTO.Genres)
             {
