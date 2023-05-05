@@ -25,12 +25,19 @@ namespace Cinema.Module.Room.Service
 
         public RoomDTO AddRoom(RoomDTO room)
         {
+            if(!CheckExistName(room.Name))
+            {
+                throw new InvalidOperationException($"Name: '{room.Name}' existed!");
+            }
+            room.RoomStatus = Enum.RoomStatus.READY;
             RoomDTO roomDTO = _mapper.Map<RoomDTO>(_roomRepository.AddRoom(_mapper.Map<RoomModel>(room)));
-            foreach(SeatDTO seat in roomDTO.Seats)
+            List<SeatDTO> seatDTOs = new List<SeatDTO>();
+            foreach (SeatDTO seat in room.Seats)
             {
                 seat.RoomId = roomDTO.Id;
-                roomDTO.Seats.Add(_seatService.AddSeat(seat));
+                seatDTOs.Add(_seatService.AddSeat(seat));
             }
+            roomDTO.Seats = seatDTOs;
             return roomDTO;
         }
 
@@ -50,18 +57,26 @@ namespace Cinema.Module.Room.Service
 
         public List<RoomDTO> GetRooms()
         {
-            List<RoomModel> rooms = _roomRepository.GetRooms();
-            List<RoomDTO> result = new List<RoomDTO>();
-            foreach(RoomModel room in rooms)
-            {
-                result.Add(GetRoom(room.Id));
-            }
+            List<RoomDTO> result = _roomRepository.GetRooms().Select(p => GetRoom(p.Id)).ToList();
             return result;
         }
 
         public RoomDTO UpdateRoom(RoomDTO room)
         {
+            if (!CheckExistName(room.Name))
+            {
+                throw new InvalidOperationException($"Name: '{room.Name}' existed!");
+            }
             throw new NotImplementedException();
+        }
+
+        private bool CheckExistName(string name)
+        {
+            if(_roomRepository.GetRoom(name) != null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

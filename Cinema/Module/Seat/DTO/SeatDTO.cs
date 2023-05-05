@@ -7,9 +7,9 @@ namespace Cinema.Module.Seat.DTO
     {
         public int Id { get; set; }
 
-        public string Postion { get; set; }
+        public string Position { get; set; }
 
-        public SeatTypeDTO SeatType { get; set; }
+        public SeatTypeDTO? SeatTypeDTO { get; set; }
 
         public int SeatTypeId { get; set; }
 

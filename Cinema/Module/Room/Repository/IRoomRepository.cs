@@ -10,6 +10,8 @@ namespace Cinema.Module.Room.Repository
 
         RoomModel GetRoom(int id);
 
+        RoomModel GetRoom(string roomName);
+
         List<RoomModel> GetRooms();
 
         void DeleteRoom(int id);

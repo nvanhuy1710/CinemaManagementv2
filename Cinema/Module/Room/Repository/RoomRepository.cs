@@ -1,4 +1,5 @@
 ﻿using Cinema.Data;
+using Cinema.Enum;
 using Cinema.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -29,12 +30,33 @@ namespace Cinema.Module.Room.Repository
 
         public RoomModel GetRoom(int id)
         {
-            return _context.Rooms.Where(p => p.Id == id).Single();
+            IEnumerable<RoomModel> roomModels = _context.Rooms.Where(p => p.Id == id && p.RoomStatus != RoomStatus.DELETED);
+            if (roomModels.Any())
+            {
+                return roomModels.First();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public RoomModel GetRoom(string roomName)
+        {
+            IEnumerable<RoomModel> roomModels = _context.Rooms.Where(p => p.Name == roomName && p.RoomStatus != RoomStatus.DELETED);
+            if(roomModels.Any())
+            {
+                return roomModels.First();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public List<RoomModel> GetRooms()
         {
-            return _context.Rooms.ToList();
+            return _context.Rooms.Where(p => p.RoomStatus != RoomStatus.DELETED).ToList();
         }
 
         public RoomModel UpdateRoom(RoomModel room)

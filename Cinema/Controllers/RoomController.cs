@@ -21,8 +21,14 @@ namespace Cinema.Controllers
         [HttpPost("room")]
         public IActionResult AddRoom([FromBody] RoomDTO roomDTO)
         {
-            RoomDTO result = _roomService.AddRoom(roomDTO);
-            return CreatedAtAction(nameof(GetRoom), new {id =  roomDTO.Id}, roomDTO);
+            try 
+            {
+                RoomDTO result = _roomService.AddRoom(roomDTO);
+                return CreatedAtAction(nameof(GetRoom), new { id = roomDTO.Id }, roomDTO);
+            } catch(InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [Authorize(Roles = "ADMIN")]
