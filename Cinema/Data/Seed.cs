@@ -80,6 +80,34 @@ namespace Cinema.Data
                 });
                 dataContext.SaveChanges();
             }
+            if (!dataContext.Genres.Any())
+            {
+                dataContext.Genres.AddRange(new GenreModel[]
+                {
+                    new GenreModel() { Name = "Hành động" },
+                    new GenreModel() { Name = "Tình cảm" },
+                    new GenreModel() { Name = "Kinh dị" },
+                    new GenreModel() { Name = "Viễn tưởng" },
+                    new GenreModel() { Name = "Hoạt hình" },
+                    new GenreModel() { Name = "Bắn súng" },
+                    new GenreModel() { Name = "Phiêu lưu" },
+                    new GenreModel() {Name = "Hài"},
+                    new GenreModel() {Name = "Tội phạm"},
+                    new GenreModel() {Name = "Tâm lý"},
+                    new GenreModel() {Name = "Âm nhạc"},
+                    new GenreModel() {Name = "Lãng mạn"},
+                    new GenreModel() {Name = "Gia đình"},
+                    new GenreModel() {Name = "Thần thoại"},
+                    new GenreModel() {Name = "Siêu anh hùng"},
+                    new GenreModel() {Name = "Tài liệu"},
+                    new GenreModel() {Name = "Khoa học"},
+                    new GenreModel() {Name = "Chiến tranh"},
+                    new GenreModel() {Name = "Thể thao"},
+                    new GenreModel() {Name = "Lịch sử"},
+
+                });
+                dataContext.SaveChanges();
+            }
         }
     }
 }
