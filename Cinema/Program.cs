@@ -20,7 +20,6 @@ using Cinema.Module.Show.Repository;
 using Cinema.Module.Show.Service;
 using Cinema.Module.User.Repository;
 using Cinema.Module.User.Service;
-using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
