@@ -25,14 +25,21 @@ namespace Cinema.Controllers
         {
             try
             {
-                var _uploadedImagefiles = Request.Form.Files.GetFile("image");
+                var uploadedImagefile = Request.Form.Files.GetFile("poster");
+                var uploadedAdImagefile = Request.Form.Files.GetFile("adposter");
                 string json = Request.Form["film"];
                 FilmDTO filmDTO = JsonConvert.DeserializeObject<FilmDTO>(json);
-                FilmDTO film = _filmService.AddFilm(filmDTO);
-                if(_uploadedImagefiles  != null)
+                string path = string.Empty;
+                string adPath = string.Empty;
+                if(uploadedImagefile != null)
                 {
-                    _filmService.SavePoster(film.Id, film.Name, _uploadedImagefiles);
+                    path = _filmService.SavePoster(filmDTO.Name, filmDTO.Director, uploadedImagefile);
                 }
+                if (uploadedAdImagefile != null)
+                {
+                    adPath = _filmService.SavePoster(filmDTO.Name, filmDTO.Director, uploadedAdImagefile, true);
+                }
+                FilmDTO film = _filmService.AddFilm(filmDTO, path, adPath);
                 return Ok(film);
             }
             catch (Exception ex)
@@ -69,11 +76,33 @@ namespace Cinema.Controllers
         {
             try
             {
-                var _uploadedImagefiles = Request.Form.Files.GetFile("image");
+                var _uploadedImagefiles = Request.Form.Files.GetFile("poster");
                 FilmDTO oldFilm = _filmService.GetFilm(id);
                 if(_uploadedImagefiles != null)
                 {
-                    _filmService.SavePoster(oldFilm.Id, oldFilm.Name, _uploadedImagefiles);
+                    oldFilm.PosterUrl = _filmService.SavePoster(oldFilm.Name, oldFilm.Director, _uploadedImagefiles);
+                    _filmService.UpdateFilm(oldFilm);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut("film/ad-poster/{id}")]
+        public IActionResult UpdateAdPoster(int id)
+        {
+            try
+            {
+                var _uploadedImagefiles = Request.Form.Files.GetFile("adposter");
+                FilmDTO oldFilm = _filmService.GetFilm(id);
+                if (_uploadedImagefiles != null)
+                {
+                    oldFilm.AdPosterUrl = _filmService.SavePoster(oldFilm.Name, oldFilm.Director, _uploadedImagefiles, true);
+                    _filmService.UpdateFilm(oldFilm);
                 }
                 return Ok();
             }

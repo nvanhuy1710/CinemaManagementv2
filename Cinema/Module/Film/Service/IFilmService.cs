@@ -1,14 +1,19 @@
-﻿using Cinema.Module.Film.DTO;
+﻿using Cinema.Model;
+using Cinema.Module.Film.DTO;
 
 namespace Cinema.Module.Film.Service
 {
     public interface IFilmService
     {
-        FilmDTO AddFilm(FilmDTO filmDTO);
+        FilmDTO AddFilm(FilmDTO filmDTO, string PosterUrl, string AdPosterUrl);
 
         FilmDTO UpdateFilm(FilmDTO filmDTO);
 
-        void SavePoster(int id, string name, IFormFile file);
+        string SavePoster(string name, string director, IFormFile file, bool isAdPoster = false);
+
+        List<FilmDTO> GetCurrentFilms();
+
+        List<FilmDTO> GetIncomingFilms();
 
         void DeleteFilm(int id);
 

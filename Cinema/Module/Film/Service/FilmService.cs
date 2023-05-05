@@ -30,9 +30,12 @@ namespace Cinema.Module.Film.Service
             _filmGenreRepository = filmGenreRepository;
             _environment = environment;
         }
-        public FilmDTO AddFilm(FilmDTO filmDTO)
+        public FilmDTO AddFilm(FilmDTO filmDTO, string PosterUrl, string AdPosterUrl)
         {
+            filmDTO.PosterUrl = PosterUrl.Substring(PosterUrl.IndexOf("wwwroot"));
+            filmDTO.AdPosterUrl = AdPosterUrl.Substring(AdPosterUrl.IndexOf("wwwroot"));
             filmDTO.FilmStatus = Enum.FilmStatus.NOSCHEDULED;
+            filmDTO.ReleaseDate = filmDTO.ReleaseDate.Date;
             FilmModel model = _filmRepository.AddFilm(_mapper.Map<FilmModel>(filmDTO));
             foreach(GenreDTO genreDTO in filmDTO.Genres)
             {
@@ -48,6 +51,7 @@ namespace Cinema.Module.Film.Service
 
         public FilmDTO UpdateFilm(FilmDTO filmDTO)
         {
+            filmDTO.ReleaseDate = filmDTO.ReleaseDate.Date;
             FilmModel model = _filmRepository.UpdateFilm(_mapper.Map<FilmModel>(filmDTO));
             List<FilmGenreModel> filmGenreModels = _filmGenreRepository.GetFilmGenreModelsByFilmId(model.Id);
             foreach (GenreDTO genreDTO in filmDTO.Genres)
@@ -86,7 +90,8 @@ namespace Cinema.Module.Film.Service
             FilmModel filmModel = _filmRepository.GetFilm(id);
             FilmDTO filmDTO = _mapper.Map<FilmDTO>(filmModel);
             filmDTO.Genres = filmModel.FilmGenreModels.Select(p => _mapper.Map<GenreDTO>(p.Genre)).ToList();
-            filmDTO.Poster = GetFilePath(filmDTO.Id, filmDTO.Name.Replace(" ", ""));
+            filmDTO.PosterUrl = GetFileUrl(filmDTO.PosterUrl);
+            filmDTO.AdPosterUrl = GetFileUrl(filmDTO.AdPosterUrl, true);
             return filmDTO;
         }
 
@@ -96,22 +101,47 @@ namespace Cinema.Module.Film.Service
             {
                 FilmDTO filmDTO = _mapper.Map<FilmDTO>(model);
                 filmDTO.Genres = model.FilmGenreModels.Select(p => _mapper.Map<GenreDTO>(p.Genre)).ToList();
-                filmDTO.Poster = GetFilePath(filmDTO.Id, filmDTO.Name.Replace(" ", ""));
+                filmDTO.PosterUrl = GetFileUrl(filmDTO.PosterUrl);
+                filmDTO.AdPosterUrl = GetFileUrl(filmDTO.AdPosterUrl, true);
                 return filmDTO;
             }).ToList();
         }
 
-        public void SavePoster(int id, string name, IFormFile file)
+        public List<FilmDTO> GetCurrentFilms()
         {
-            string Filepath = GetFolderPath(id + name.Replace(" ", ""));
+            return _filmRepository.GetCurrentFilms().Select(model => 
+            {
+                FilmDTO filmDTO = _mapper.Map<FilmDTO>(model);
+                filmDTO.Genres = model.FilmGenreModels.Select(p => _mapper.Map<GenreDTO>(p.Genre)).ToList();
+                filmDTO.PosterUrl = GetFileUrl(filmDTO.PosterUrl);
+                filmDTO.AdPosterUrl = GetFileUrl(filmDTO.AdPosterUrl, true);
+                return filmDTO;
+            }).ToList();
+        }
+
+        public List<FilmDTO> GetIncomingFilms()
+        {
+            return _filmRepository.GetIncomingFilms().Select(model =>
+            {
+                FilmDTO filmDTO = _mapper.Map<FilmDTO>(model);
+                filmDTO.Genres = model.FilmGenreModels.Select(p => _mapper.Map<GenreDTO>(p.Genre)).ToList();
+                filmDTO.PosterUrl = GetFileUrl(filmDTO.PosterUrl);
+                filmDTO.AdPosterUrl = GetFileUrl(filmDTO.AdPosterUrl, true);
+                return filmDTO;
+            }).ToList();
+        }
+
+        public string SavePoster(string name, string director, IFormFile file, bool isAdPoster = false)
+        {
+            string Filepath = GetFolderPath(name.Replace(" ", string.Empty) + "_" + director.Replace(" ", string.Empty));
 
             if (!System.IO.Directory.Exists(Filepath))
             {
                 System.IO.Directory.CreateDirectory(Filepath);
             }
-
-            string imagepath = Filepath + "\\Poster.png";
-
+            string imagepath;
+            if(isAdPoster) imagepath = Filepath + "\\AdPoster.png";
+            else imagepath = Filepath + "\\Poster.png";
             if (System.IO.File.Exists(imagepath))
             {
                 System.IO.File.Delete(imagepath);
@@ -120,6 +150,7 @@ namespace Cinema.Module.Film.Service
             {
                 file.CopyTo(stream);
             }
+            return imagepath;
         }
 
         private string GetFolderPath(string FolderName)
@@ -127,22 +158,24 @@ namespace Cinema.Module.Film.Service
             return this._environment.WebRootPath + "\\Uploads\\Movies\\" + FolderName;
         }
 
-        private string GetFilePath(int MovieId, string MovieName)
+        private string GetFileUrl(string path, bool IsAdPoster = false)
         {
+            if (path == null) return null;
             string Url = string.Empty;
             string HostUrl = "https://localhost:7163/";
-            string Folderpath = GetFolderPath(MovieId + MovieName);
-            string Filepath = Folderpath + "\\" + "Poster.png";
+            string Filepath = path;
             if (!System.IO.File.Exists(Filepath))
             {
                 return null;
             }
             else
             {
-                Url = HostUrl + "/Uploads/Movies/" + MovieId + MovieName + "/" + "Poster.png";
+                string[] folder = path.Split(Path.DirectorySeparatorChar);
+                if(IsAdPoster) Url = HostUrl + "Uploads/Movies/" + folder[3] + "/" + "AdPoster.png";
+                else Url = HostUrl + "Uploads/Movies/" + folder[3] + "/" + "Poster.png";
             }
             return Url;
 
-        }
+        } 
     }
 }
