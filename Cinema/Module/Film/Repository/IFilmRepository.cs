@@ -10,6 +10,10 @@ namespace Cinema.Module.Film.Repository
 
         List<FilmModel> GetFilms();
 
+        List<FilmModel> GetCurrentFilms();
+
+        List<FilmModel> GetIncomingFilms();
+
         FilmModel UpdateFilm(FilmModel film);
 
         void DeleteFilm(int id);

@@ -1,4 +1,4 @@
-using Cinema.Data;
+﻿using Cinema.Data;
 using Cinema.Helper;
 using Cinema.Module.Account.Repository;
 using Cinema.Module.Account.Service;
@@ -16,9 +16,15 @@ using Cinema.Module.Seat.Repository;
 using Cinema.Module.Seat.Service;
 using Cinema.Module.SeatType.Repository;
 using Cinema.Module.SeatType.Service;
+using Cinema.Module.Show.Repository;
+using Cinema.Module.Show.Service;
 using Cinema.Module.User.Repository;
 using Cinema.Module.User.Service;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -53,6 +59,8 @@ builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<ISeatService, SeatService>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
+builder.Services.AddScoped<IShowRepository, ShowRepository>();
+builder.Services.AddScoped<IShowService, ShowService>();
 builder.Services.AddScoped<TokenProvider>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -92,6 +100,10 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // Tối đa 100 MB
+});
 
 var app = builder.Build();
 

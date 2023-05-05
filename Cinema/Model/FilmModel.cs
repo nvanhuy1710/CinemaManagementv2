@@ -28,14 +28,23 @@ namespace Cinema.Model
 
         public int? AgeLimit { get; set; }
 
+        public string PosterUrl { get; set; }
+
+        public string AdPosterUrl { get; set; }
+
+        public DateTime ReleaseDate { get; set; }
+
         [EnumDataType(typeof(string))]
         public FilmStatus FilmStatus { get; set; }
 
         public virtual ICollection<FilmGenreModel> FilmGenreModels { get; set; }
 
+        public virtual ICollection<ShowModel> ShowModels { get; set; }
+
         public FilmModel()
         {
             this.FilmGenreModels = new HashSet<FilmGenreModel>();
+            this.ShowModels = new HashSet<ShowModel>();
         }
     }
 }

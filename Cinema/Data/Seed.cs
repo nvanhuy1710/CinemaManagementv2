@@ -53,6 +53,33 @@ namespace Cinema.Data
                 });
                 dataContext.SaveChanges();
             }
+            if (!dataContext.Rooms.Any())
+            {
+                dataContext.Rooms.AddRange(new RoomModel[]
+                {
+                    new RoomModel() {Row = 1, Col = 2, RoomStatus = Enum.RoomStatus.READY, Name = "Phòng 1"},
+                    new RoomModel() {Row = 1, Col = 1, RoomStatus = Enum.RoomStatus.READY, Name = "Phòng 2"},
+                    new RoomModel() {Row = 2, Col = 3, RoomStatus = Enum.RoomStatus.READY, Name = "Phòng 3"},
+                });
+                dataContext.SaveChanges();
+            }
+            if (!dataContext.Seats.Any())
+            {
+                dataContext.Seats.AddRange(new SeatModel[]
+                {
+                    new SeatModel() {Position = "1-1", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 1").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "Thường").Select(p => p.Id).Single()},
+                    new SeatModel() {Position = "1-2", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 1").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "VIP").Select(p => p.Id).Single()},
+                    new SeatModel() {Position = "1-1", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 2").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "Đôi").Select(p => p.Id).Single()},
+                    new SeatModel() {Position = "1-1", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 3").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "Thường").Select(p => p.Id).Single()},
+                    new SeatModel() {Position = "1-2", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 3").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "Thường").Select(p => p.Id).Single()},
+                    new SeatModel() {Position = "1-3", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 3").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "Thường").Select(p => p.Id).Single()},
+                    new SeatModel() {Position = "2-1", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 3").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "VIP").Select(p => p.Id).Single()},
+                    new SeatModel() {Position = "2-2", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 3").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "VIP").Select(p => p.Id).Single()},
+                    new SeatModel() {Position = "2-3", RoomId = dataContext.Rooms.Where(p => p.Name == "Phòng 3").Select(p => p.Id).Single(), SeatTypeId = dataContext.SeatTypes.Where(p => p.Name == "VIP").Select(p => p.Id).Single()},
+
+                });
+                dataContext.SaveChanges();
+            }
         }
     }
 }

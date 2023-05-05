@@ -20,11 +20,15 @@ namespace Cinema.Module.Film.DTO
 
         public string Actor { get; set; }
 
-        public string? Poster { get; set; }
-
         public int AgeLimit { get; set; }
 
         public string Trailer { get; set; }
+
+        public DateTime ReleaseDate { get; set; }
+
+        public string? PosterUrl { get; set; }
+
+        public string? AdPosterUrl { get; set; }
 
         public FilmStatus FilmStatus { get; set; }
 

@@ -28,6 +28,14 @@ namespace Cinema.Module.Film.Repository
             _context.SaveChanges();
         }
 
+        public List<FilmModel> GetCurrentFilms()
+        {
+            List<FilmModel> filmModels = _context.Films.Include(p => p.ShowModels).ToList();
+            List<FilmModel> currentFilms = filmModels.
+                Where(p => p.ReleaseDate >= DateTime.Now.Date && p.ShowModels.Any(y => y.StartTime.Date >= DateTime.Now.Date)).ToList();
+            return currentFilms;
+        }
+
         public FilmModel GetFilm(int id)
         {
             return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).Where(p => p.Id == id).Single();
@@ -36,6 +44,11 @@ namespace Cinema.Module.Film.Repository
         public List<FilmModel> GetFilms()
         {
             return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).ToList();
+        }
+
+        public List<FilmModel> GetIncomingFilms()
+        {
+            return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).Where(p => p.ReleaseDate >= DateTime.Now.Date).ToList();
         }
 
         public FilmModel UpdateFilm(FilmModel film)
