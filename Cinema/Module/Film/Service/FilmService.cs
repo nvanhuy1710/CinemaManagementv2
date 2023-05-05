@@ -162,7 +162,7 @@ namespace Cinema.Module.Film.Service
         {
             if (path == null) return null;
             string Url = string.Empty;
-            string HostUrl = "https://localhost:7163/";
+            string HostUrl = "https://localhost:44308/";
             string Filepath = path;
             if (!System.IO.File.Exists(Filepath))
             {
