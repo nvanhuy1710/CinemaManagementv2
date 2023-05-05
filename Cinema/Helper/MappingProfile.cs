@@ -7,6 +7,7 @@ using Cinema.Module.Role.DTO;
 using Cinema.Module.Room.DTO;
 using Cinema.Module.Seat.DTO;
 using Cinema.Module.SeatType.DTO;
+using Cinema.Module.Show.DTO;
 using Cinema.Module.User.DTO;
 
 namespace Cinema.Helper
@@ -34,6 +35,8 @@ namespace Cinema.Helper
             CreateMap<SeatTypeDTO, SeatTypeModel>();
             CreateMap<SeatDTO, SeatModel>();
             CreateMap<SeatModel, SeatDTO>();
+            CreateMap<ShowDTO, ShowModel>();
+            CreateMap<ShowModel, ShowDTO>();
         }
     }
 }

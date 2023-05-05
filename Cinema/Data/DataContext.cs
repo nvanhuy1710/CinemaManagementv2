@@ -28,6 +28,8 @@ namespace Cinema.Data
 
         public DbSet<SeatTypeModel> SeatTypes { get; set; }
 
+        public DbSet<ShowModel> Shows { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
