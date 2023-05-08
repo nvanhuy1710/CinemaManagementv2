@@ -2,11 +2,16 @@
 using Cinema.Helper;
 using Cinema.Module.Account.Repository;
 using Cinema.Module.Account.Service;
+using Cinema.Module.Bill.Repository;
+using Cinema.Module.Bill.Service;
 using Cinema.Module.Film.Repository;
 using Cinema.Module.Film.Service;
 using Cinema.Module.FilmGenre.Repository;
+using Cinema.Module.FoodOrder.Repository;
+using Cinema.Module.FoodOrder.Service;
 using Cinema.Module.Genre.Repository;
 using Cinema.Module.Genre.Service;
+using Cinema.Module.Reservation.Repository;
 using Cinema.Module.Role.Repository;
 using Cinema.Module.Role.Repository.Impl;
 using Cinema.Module.Role.Service;
@@ -60,6 +65,11 @@ builder.Services.AddScoped<ISeatService, SeatService>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<IShowService, ShowService>();
+builder.Services.AddScoped<IFoodOrderRepository, FoodOrderRepository>();
+builder.Services.AddScoped<IFoodOrderService, FoodOrderService>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IBillRepository, BillRepository>();
+builder.Services.AddScoped<IBillService, BillService>();
 builder.Services.AddScoped<TokenProvider>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
