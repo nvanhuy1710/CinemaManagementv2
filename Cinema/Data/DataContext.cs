@@ -30,6 +30,14 @@ namespace Cinema.Data
 
         public DbSet<ShowModel> Shows { get; set; }
 
+        public DbSet<BillModel> Bills { get; set; }
+
+        public DbSet<ReservationModel> Reservations { get; set; }
+
+        public DbSet<FoodModel> Foods { get; set; }
+
+        public DbSet <FoodOrderModel> FoodOrders { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
