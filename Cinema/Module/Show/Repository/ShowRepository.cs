@@ -49,23 +49,26 @@ namespace Cinema.Module.Show.Repository
             return entityEntry.Entity;
         }
 
-        public List<ShowModel> GetShowByInfor(int filmId, int roomId, DateTime date)
+        public List<List<ShowModel>> GetShowByInfor(int filmId, int roomId, DateTime date)
         {
             IQueryable<ShowModel> query = _context.Shows.Include(p => p.Film).Include(p => p.Room);
 
             if (filmId != 0)
             {
-                query = query.Where(p => p.FilmId == filmId);
+                query = query.Where(p => p.FilmId == filmId && p.StartTime.Date >= DateTime.Now.Date);
             }
 
             if (roomId != 0)
             {
-                query = query.Where(p => p.RoomId == roomId);
+                query = query.Where(p => p.RoomId == roomId && p.StartTime.Date >= DateTime.Now.Date);
             }
 
-            query = query.Where(p => p.StartTime.Date == date.Date);
+            if(date != DateTime.MinValue)
+            {
+                query = query.Where(p => p.StartTime.Date == date.Date);
+            }
 
-            return query.ToList();
+            return query.GroupBy(s => s.FilmId).Select(g => g.ToList()).ToList();
         }
     }
 }

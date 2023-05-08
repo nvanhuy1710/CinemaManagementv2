@@ -12,6 +12,6 @@ namespace Cinema.Module.Show.Service
 
         ShowDTO GetShow(int id);
 
-        List<ShowDTO> GetShowByInfor(int filmId, int roomId, DateTime date);
+        List<List<ShowDTO>> GetShowByInfor(int filmId, int roomId, DateTime date);
     }
 }

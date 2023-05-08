@@ -38,7 +38,7 @@ namespace Cinema.Controllers
             try
             {
                 ShowDTO result = _showService.UpdateShow(showDTO);
-                return CreatedAtAction(nameof(GetShow), new { id = showDTO.Id }, showDTO);
+                return Ok(result);
             }
             catch (InvalidOperationException ex)
             {

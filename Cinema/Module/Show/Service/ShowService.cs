@@ -26,12 +26,15 @@ namespace Cinema.Module.Show.Service
 
         public ShowDTO AddShow(ShowDTO showDTO)
         {
-            List<ShowModel> showModels = GetShowByRoom(showDTO.RoomId, showDTO.StartTime.Date);
-            foreach(ShowModel showModel in showModels) 
+            List<List<ShowDTO>> showDTOs = GetShowByInfor(0, showDTO.RoomId, showDTO.StartTime.Date);
+            foreach (List<ShowDTO> shows in showDTOs)
             {
-                if(showDTO.StartTime <= showModel.EndTime && showDTO.StartTime.Date == showModel.EndTime.Date)
+                foreach (ShowDTO show in shows)
                 {
-                    throw new InvalidOperationException("This room already has scheduled");
+                    if (showDTO.StartTime <= show.EndTime && showDTO.StartTime.Date == show.EndTime.Date)
+                    {
+                        throw new InvalidOperationException("This room has schedule conflict");
+                    }
                 }
             }
             FilmDTO filmDTO = _filmService.GetFilm(showDTO.FilmId);
@@ -49,19 +52,22 @@ namespace Cinema.Module.Show.Service
             return MapModelToDTO(_showRepository.GetShow(id));
         }
 
-        public List<ShowDTO> GetShowByInfor(int filmId, int roomId, DateTime date)
+        public List<List<ShowDTO>> GetShowByInfor(int filmId, int roomId, DateTime date)
         {
-            return _showRepository.GetShowByInfor(filmId, roomId, date).Select(p => MapModelToDTO(p)).ToList();
+            return _showRepository.GetShowByInfor(filmId, roomId, date).Select(p => p.Select(y => MapModelToDTO(y)).ToList()).ToList();
         }
 
         public ShowDTO UpdateShow(ShowDTO showDTO)
         {
-            List<ShowModel> showModels = GetShowByRoom(showDTO.RoomId, showDTO.StartTime.Date);
-            foreach (ShowModel showModel in showModels)
+            List<List<ShowDTO>> showDTOs = GetShowByInfor(0, showDTO.RoomId, showDTO.StartTime.Date);
+            foreach (List<ShowDTO> shows in showDTOs)
             {
-                if (showDTO.StartTime <= showModel.EndTime && showDTO.StartTime.Date == showModel.EndTime.Date)
+                foreach(ShowDTO show in shows)
                 {
-                    throw new InvalidOperationException("This room has schedule conflict");
+                    if (showDTO.StartTime <= show.EndTime && showDTO.StartTime.Date == show.EndTime.Date)
+                    {
+                        throw new InvalidOperationException("This room has schedule conflict");
+                    }
                 }
             }
             return MapModelToDTO(_showRepository.UpdateShow(_mapper.Map<ShowModel>(showDTO)));
@@ -70,14 +76,8 @@ namespace Cinema.Module.Show.Service
         private ShowDTO MapModelToDTO(ShowModel showModel)
         {
             ShowDTO showDTO = _mapper.Map<ShowDTO>(showModel);
-            if(showModel.Film != null) showDTO.FilmDTO = _mapper.Map<FilmDTO>(showModel.Film);
-            if (showModel.Room != null) showDTO.RoomDTO = _mapper.Map<RoomDTO>(showModel.Room);
+            showDTO.Poster = _filmService.GetFilm(showModel.FilmId).PosterUrl;
             return showDTO;
-        }
-
-        private List<ShowModel> GetShowByRoom(int roomId, DateTime date)
-        {
-            return _showRepository.GetShowByInfor(0, roomId, date).ToList();
         }
     }
 }
