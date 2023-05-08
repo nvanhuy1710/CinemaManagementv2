@@ -16,6 +16,8 @@ namespace Cinema.Module.Film.Repository
 
         FilmModel UpdateFilm(FilmModel film);
 
+        void UpdateImage(int id, string Poster, string AdPoster);
+
         void DeleteFilm(int id);
     }
 }

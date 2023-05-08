@@ -108,6 +108,17 @@ namespace Cinema.Data
                 });
                 dataContext.SaveChanges();
             }
+            if(!dataContext.Foods.Any())
+            {
+                dataContext.Foods.AddRange(new FoodModel[]
+                {
+                    new FoodModel {Name = "Bắp", Size = "M", Cost = 20000},
+                    new FoodModel {Name = "Nước Cola", Size = "M", Cost = 15000},
+                    new FoodModel {Name = "Combo bắp nước", Description = "1 Bắp size M + 1 Cola size M", Cost = 30000},
+                    new FoodModel {Name = "Combo cặp đôi", Description = "2 Bắp size M + 2 Cola size M", Cost = 50000}
+                });
+                dataContext.SaveChanges();
+            }
         }
     }
 }

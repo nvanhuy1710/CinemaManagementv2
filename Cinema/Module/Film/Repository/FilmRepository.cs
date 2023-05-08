@@ -61,9 +61,19 @@ namespace Cinema.Module.Film.Repository
             OldFilm.Actor = film.Actor;
             OldFilm.AgeLimit = film.AgeLimit;
             OldFilm.FilmStatus = film.FilmStatus;
+            OldFilm.Content = film.Content;
+            OldFilm.Trailer = film.Trailer;
             EntityEntry<FilmModel> entityEntry = _context.Update(OldFilm);
             _context.SaveChanges();
             return entityEntry.Entity;
+        }
+
+        public void UpdateImage(int id, string? Poster, string? AdPoster)
+        {
+            FilmModel filmModel = GetFilm(id);
+            if(Poster != null) filmModel.PosterUrl = Poster;
+            if(AdPoster != null) filmModel.AdPosterUrl = AdPoster;
+            UpdateFilm(filmModel);
         }
     }
 }

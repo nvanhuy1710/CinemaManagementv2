@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Cinema.Helper;
 using Cinema.Model;
+using Cinema.Module.Reservation.Repository;
 using Cinema.Module.Seat.DTO;
 using Cinema.Module.Seat.Repository;
 using Cinema.Module.SeatType.DTO;
@@ -12,12 +13,15 @@ namespace Cinema.Module.Seat.Service
 
         private readonly ISeatRepository _seatRepository;
 
+        private readonly IReservationRepository _reservationRepository;
+
         private readonly IMapper _mapper;
 
-        public SeatService(ISeatRepository seatRepository, IMapper mapper)
+        public SeatService(ISeatRepository seatRepository, IMapper mapper, IReservationRepository reservationRepository)
         {
             _seatRepository = seatRepository;
             _mapper = mapper;
+            _reservationRepository = reservationRepository;
         }
 
         public SeatDTO AddSeat(SeatDTO seatDTO)
@@ -57,6 +61,20 @@ namespace Cinema.Module.Seat.Service
                 SeatDTO seatDTO = _mapper.Map<SeatDTO>(seatModel);
                 seatDTO.SeatTypeDTO = _mapper.Map<SeatTypeDTO>(seatModel.SeatType);
                 seatDTOs.Add(seatDTO);
+            }
+            return seatDTOs;
+        }
+
+        public List<SeatDTO> GetSeatForBook(int roomId, int showId)
+        {
+            List<ReservationModel> reservationModels = _reservationRepository.GetReservationByShowId(showId);
+            List<SeatDTO> seatDTOs = GetSeatByRoomId(roomId);
+            foreach(ReservationModel reservationModel in reservationModels)
+            {
+                foreach(SeatDTO seatDTO in seatDTOs)
+                {
+                    if (seatDTO.Id == reservationModel.SeatId) seatDTO.IsBooked = true;
+                }
             }
             return seatDTOs;
         }

@@ -13,12 +13,14 @@ namespace Cinema.Module.Show.DTO
 
         public DateTime EndTime { get; set; }
 
+        public string FilmName { get; set; }
+
+        public string Poster { get; set; }
+
         public int FilmId { get; set; }
 
+        public int AgeLimit { get; set; }
+
         public int RoomId { get; set; }
-
-        public FilmDTO? FilmDTO { get; set; }
-
-        public RoomDTO? RoomDTO { get; set; }
     }
 }
