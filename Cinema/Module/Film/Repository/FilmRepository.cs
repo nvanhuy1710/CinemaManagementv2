@@ -63,6 +63,7 @@ namespace Cinema.Module.Film.Repository
             OldFilm.FilmStatus = film.FilmStatus;
             OldFilm.Content = film.Content;
             OldFilm.Trailer = film.Trailer;
+            OldFilm.ReleaseDate = film.ReleaseDate;
             EntityEntry<FilmModel> entityEntry = _context.Update(OldFilm);
             _context.SaveChanges();
             return entityEntry.Entity;

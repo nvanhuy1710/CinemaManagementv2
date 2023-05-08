@@ -52,7 +52,7 @@ namespace Cinema.Module.Film.Service
         public FilmDTO UpdateFilm(FilmDTO filmDTO)
         {
             filmDTO.ReleaseDate = filmDTO.ReleaseDate.Date;
-            FilmDTO oldFilm = GetFilm(filmDTO.Id);
+            FilmModel oldFilm = _filmRepository.GetFilm(filmDTO.Id);
             string oldPath = Path.GetDirectoryName(oldFilm.PosterUrl);
             string newPath = GetFolderPath(filmDTO.Name.Replace(" ", string.Empty) + "_" + filmDTO.Director.Replace(" ", string.Empty));
             if (Directory.Exists(oldPath))
