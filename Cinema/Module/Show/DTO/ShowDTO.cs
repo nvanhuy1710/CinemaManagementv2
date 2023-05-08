@@ -19,6 +19,8 @@ namespace Cinema.Module.Show.DTO
 
         public int FilmId { get; set; }
 
+        public int AgeLimit { get; set; }
+
         public int RoomId { get; set; }
     }
 }

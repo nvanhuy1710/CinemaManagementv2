@@ -6,6 +6,8 @@ using Cinema.Module.FoodOrder.DTO;
 using Cinema.Module.FoodOrder.Service;
 using Cinema.Module.Reservation.Repository;
 using Cinema.Module.Seat.DTO;
+using Cinema.Module.Show.Service;
+using Cinema.Module.User.Service;
 
 namespace Cinema.Module.Bill.Service
 {
@@ -18,19 +20,32 @@ namespace Cinema.Module.Bill.Service
 
         private readonly IReservationRepository _reservationRepository;
 
+        private readonly IShowService _showService;
+
+        private readonly IUserService _userService;
+
         private readonly IMapper _mapper;
 
-        public BillService(IBillRepository billRepository, IMapper mapper, IFoodOrderService foodOrderService,
-            IReservationRepository reservationRepository)
+        public BillService(IBillRepository billRepository, IMapper mapper, 
+            IFoodOrderService foodOrderService,
+            IReservationRepository reservationRepository,
+            IShowService showService,
+            IUserService userService)
         {
             _billRepository = billRepository;
             _mapper = mapper;
             _foodOrderService = foodOrderService;
             _reservationRepository = reservationRepository;
+            _userService = userService;
+            _showService = showService;
         }
 
         public BillDTO AddBill(BillDTO bill)
         {
+            if((DateTime.Today.Year - _userService.GetUser(bill.UserId).Birth.Year) < _showService.GetShow(bill.Id).AgeLimit) 
+            {
+                throw new ArgumentException("User not enough old!");
+            }
             bill.DatePurchased = DateTime.Now.Date;
             BillModel result = _billRepository.AddBill(_mapper.Map<BillModel>(bill));
             if(bill.FoodOrderDTOs != null)

@@ -40,6 +40,7 @@ namespace Cinema.Helper
             CreateMap<SeatModel, SeatDTO>();
             CreateMap<ShowDTO, ShowModel>();
             CreateMap<ShowModel, ShowDTO>().ForMember(dest => dest.FilmName, opt => opt.MapFrom(src => src.Film.Name))
+                                           .ForMember(dest => dest.AgeLimit, opt => opt.MapFrom(src => src.Film.AgeLimit))
                                            .ForMember(dest => dest.RoomId, opt => opt.MapFrom(src => src.Room.Id));
             CreateMap<FoodModel, FoodDTO>();
             CreateMap<FoodDTO, FoodModel>();

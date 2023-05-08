@@ -26,14 +26,21 @@ namespace Cinema.Controllers
         [HttpPost("bill")]
         public IActionResult AddBill([FromBody] BillDTO billDTO)
         {
-            UserDTO userDTO = GetCurrentUser();
-            if (userDTO != null)
+            try 
             {
-                billDTO.UserId = userDTO.Id;
-                BillDTO result = _billService.AddBill(billDTO);
-                return Ok(result);
+                UserDTO userDTO = GetCurrentUser();
+                if (userDTO != null)
+                {
+                    billDTO.UserId = userDTO.Id;
+                    BillDTO result = _billService.AddBill(billDTO);
+                    return Ok(result);
+                }
+                return Unauthorized();
+            } catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
-            return Unauthorized();
+            
         }
 
         [HttpGet("bill")]
