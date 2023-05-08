@@ -58,10 +58,10 @@ namespace Cinema.Module.Film.Service
             string newPath = newFullPath.Substring(newFullPath.IndexOf("wwwroot"));
             if (Directory.Exists(oldPath))
             {
-                Directory.Move(oldPath, newPath);
-                Directory.Delete(oldPath, true);
+                Directory.Move(oldPath, newFullPath);
+                /*Directory.Delete(oldPath, false);*/
             }
-            _filmRepository.UpdateImage(filmDTO.Id, newPath + "\\Poster.png", oldPath +"\\AdPoster.png");
+            _filmRepository.UpdateImage(filmDTO.Id, newPath + "\\Poster.png", newPath +"\\AdPoster.png");
             FilmModel model = _filmRepository.UpdateFilm(_mapper.Map<FilmModel>(filmDTO));
             List<FilmGenreModel> filmGenreModels = _filmGenreRepository.GetFilmGenreModelsByFilmId(model.Id);
             foreach (GenreDTO genreDTO in filmDTO.Genres)
