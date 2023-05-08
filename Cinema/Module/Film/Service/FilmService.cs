@@ -52,6 +52,14 @@ namespace Cinema.Module.Film.Service
         public FilmDTO UpdateFilm(FilmDTO filmDTO)
         {
             filmDTO.ReleaseDate = filmDTO.ReleaseDate.Date;
+            FilmDTO oldFilm = GetFilm(filmDTO.Id);
+            string oldPath = Path.GetDirectoryName(oldFilm.PosterUrl);
+            string newPath = GetFolderPath(filmDTO.Name.Replace(" ", string.Empty) + "_" + filmDTO.Director.Replace(" ", string.Empty));
+            if (Directory.Exists(oldPath))
+            {
+                Directory.Move(oldPath, newPath);
+            }
+            _filmRepository.UpdateImage(filmDTO.Id, newPath + "\\Poster.png", oldPath +"\\AdPoster.png");
             FilmModel model = _filmRepository.UpdateFilm(_mapper.Map<FilmModel>(filmDTO));
             List<FilmGenreModel> filmGenreModels = _filmGenreRepository.GetFilmGenreModelsByFilmId(model.Id);
             foreach (GenreDTO genreDTO in filmDTO.Genres)
