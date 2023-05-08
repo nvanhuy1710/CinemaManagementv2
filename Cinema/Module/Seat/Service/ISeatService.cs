@@ -14,6 +14,8 @@ namespace Cinema.Module.Seat.Service
 
         List<SeatDTO> GetSeatByRoomId(int roomId);
 
+        List<SeatDTO> GetSeatForBook(int roomId, int showId);
+
         SeatDTO UpdateSeat(SeatDTO seatDTO);
 
         void DeleteSeat(int id);

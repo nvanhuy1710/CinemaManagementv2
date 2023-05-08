@@ -14,5 +14,7 @@ namespace Cinema.Module.Seat.DTO
         public int SeatTypeId { get; set; }
 
         public int RoomId { get; set; }
+
+        public bool? IsBooked { get; set; } = false;
     }
 }
