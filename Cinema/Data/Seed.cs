@@ -27,9 +27,9 @@ namespace Cinema.Data
             {
                 dataContext.Accounts.AddRange(new AccountModel[]
                 {
-                    new AccountModel() {Email = "User@gmail.com", Password = HashPassword.HashByPBKDF2("user"), AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "USER").Select(p => p.Id).Single())},
-                    new AccountModel() {Email = "Admin@gmail.com", Password = HashPassword.HashByPBKDF2("admin"), AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "ADMIN").Select(p => p.Id).Single())},
-                    new AccountModel() {Email = "Staff@gmail.com", Password = HashPassword.HashByPBKDF2("staff"), AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "STAFF").Select(p => p.Id).Single())},
+                    new AccountModel() {Email = "User@gmail.com", Password = HashPassword.HashByPBKDF2("user123"), AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "USER").Select(p => p.Id).Single())},
+                    new AccountModel() {Email = "Admin@gmail.com", Password = HashPassword.HashByPBKDF2("admin123"), AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "ADMIN").Select(p => p.Id).Single())},
+                    new AccountModel() {Email = "Staff@gmail.com", Password = HashPassword.HashByPBKDF2("staff123"), AccountStatus = Enum.AccountStatus.ACTIVATED, RoleId = Convert.ToInt32(dataContext.Roles.Where(p => p.Name == "STAFF").Select(p => p.Id).Single())},
                 });
                 dataContext.SaveChanges();
             }
@@ -104,6 +104,7 @@ namespace Cinema.Data
                     new GenreModel() {Name = "Chiến tranh"},
                     new GenreModel() {Name = "Thể thao"},
                     new GenreModel() {Name = "Lịch sử"},
+                    new GenreModel() {Name = "Kiếm hiệp"},
 
                 });
                 dataContext.SaveChanges();
