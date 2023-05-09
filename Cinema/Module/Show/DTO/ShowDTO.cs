@@ -1,6 +1,7 @@
 ﻿using Cinema.Model;
 using Cinema.Module.Film.DTO;
 using Cinema.Module.Room.DTO;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Cinema.Module.Show.DTO
@@ -11,6 +12,7 @@ namespace Cinema.Module.Show.DTO
 
         public DateTime StartTime { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public DateTime EndTime { get; set; }
 
         public string? FilmName { get; set; }

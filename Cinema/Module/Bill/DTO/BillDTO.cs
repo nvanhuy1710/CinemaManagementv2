@@ -1,6 +1,7 @@
 ﻿using Cinema.Module.FoodOrder.DTO;
 using Cinema.Module.Show.DTO;
 using Cinema.Module.User.DTO;
+using Newtonsoft.Json;
 
 namespace Cinema.Module.Bill.DTO
 {
@@ -8,7 +9,8 @@ namespace Cinema.Module.Bill.DTO
     {
         public int Id { get; set; }
 
-        public int? UserId { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public int UserId { get; set; }
 
         public int ShowId { get; set; }
 
