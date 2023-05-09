@@ -9,6 +9,7 @@ using Cinema.Module.Genre.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Cinema.Module.Film.Service
 {
@@ -145,7 +146,7 @@ namespace Cinema.Module.Film.Service
 
         public string SavePoster(string name, string director, IFormFile file, bool isAdPoster = false)
         {
-            string Filepath = GetFolderPath(name.Replace(" ", string.Empty) + "_" + director.Replace(" ", string.Empty));
+            string Filepath = GetFolderPath(RemoveSpecialCharacters(name) + "_" + RemoveSpecialCharacters(director));
 
             if (!System.IO.Directory.Exists(Filepath))
             {
@@ -188,6 +189,15 @@ namespace Cinema.Module.Film.Service
             }
             return Url;
 
-        } 
+        }
+        private string RemoveSpecialCharacters(string str)
+        {
+
+            string result = Regex.Replace(str, @"[^0-9a-zA-Z]+", "-");
+            result = Regex.Replace(result, @"-+", "-");
+            result = result.Trim('-');
+
+            return result;
+        }
     }
 }
