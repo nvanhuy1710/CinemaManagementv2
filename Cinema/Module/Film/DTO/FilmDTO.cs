@@ -20,7 +20,7 @@ namespace Cinema.Module.Film.DTO
 
         public string Actor { get; set; }
 
-        public int AgeLimit { get; set; }
+        public int? AgeLimit { get; set; }
 
         public string Trailer { get; set; }
 
