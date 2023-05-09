@@ -26,19 +26,21 @@ namespace Cinema.Module.Show.Service
 
         public ShowDTO AddShow(ShowDTO showDTO)
         {
+            FilmDTO filmDTO = _filmService.GetFilm(showDTO.FilmId);
+            showDTO.EndTime = showDTO.StartTime.AddMinutes(filmDTO.Length);
             List<List<ShowDTO>> showDTOs = GetShowByInfor(0, showDTO.RoomId, showDTO.StartTime.Date);
             foreach (List<ShowDTO> shows in showDTOs)
             {
                 foreach (ShowDTO show in shows)
                 {
-                    if (showDTO.StartTime <= show.EndTime && showDTO.StartTime.Date == show.EndTime.Date)
+                    if (((showDTO.StartTime <= show.EndTime && showDTO.StartTime >= show.StartTime) || 
+                        (showDTO.EndTime <= show.EndTime && showDTO.EndTime >= show.StartTime)) && 
+                        showDTO.StartTime.Date == show.EndTime.Date)
                     {
                         throw new InvalidOperationException("This room has schedule conflict");
                     }
                 }
             }
-            FilmDTO filmDTO = _filmService.GetFilm(showDTO.FilmId);
-            showDTO.EndTime = showDTO.StartTime.AddMinutes(filmDTO.Length);
             return MapModelToDTO(_showRepository.AddShow(_mapper.Map<ShowModel>(showDTO)));
         }
 
