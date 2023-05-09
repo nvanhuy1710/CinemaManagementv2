@@ -62,6 +62,20 @@ namespace Cinema.Controllers
             return Ok(_filmService.GetFilm(id));
         }
 
+        [AllowAnonymous]
+        [HttpGet("film/showing")]
+        public IActionResult GetCurrentFilm()
+        {
+            return Ok(_filmService.GetCurrentFilms());
+        }
+
+        [AllowAnonymous]
+        [HttpGet("film/incoming")]
+        public IActionResult GetIncomingFilm()
+        {
+            return Ok(_filmService.GetIncomingFilms());
+        }
+
         [Authorize(Roles = "ADMIN")]
         [HttpPut("film")]
         public IActionResult UpdateFilm([FromBody] FilmDTO filmDTO)
