@@ -30,7 +30,7 @@ namespace Cinema.Module.Film.Repository
 
         public List<FilmModel> GetCurrentFilms()
         {
-            List<FilmModel> filmModels = _context.Films.Include(p => p.ShowModels).ToList();
+            List<FilmModel> filmModels = _context.Films.Include(p => p.ShowModels).Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).ToList();
             List<FilmModel> currentFilms = filmModels.
                 Where(p => p.ReleaseDate <= DateTime.Now.Date && p.ShowModels.Any(y => y.StartTime.Date >= DateTime.Now.Date)).ToList();
             return currentFilms;
