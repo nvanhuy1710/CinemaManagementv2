@@ -30,7 +30,7 @@ namespace Cinema.Helper
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddMinutes(60),
+                expires: DateTime.Now.AddHours(2),
                 signingCredentials: credentials);
 
 
