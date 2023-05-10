@@ -62,9 +62,19 @@ namespace Cinema.Module.Room.Repository
         public RoomModel UpdateRoom(RoomModel room)
         {
             RoomModel oldRoom = _context.Rooms.Where(p => p.Id == room.Id).Single();
+            oldRoom.Name = room.Name;
             oldRoom.Row = room.Row;
             oldRoom.Col = room.Col;
-            oldRoom.RoomStatus = room.RoomStatus;
+            EntityEntry<RoomModel> entityEntry = _context.Rooms.Update(oldRoom);
+            _context.SaveChanges();
+            return entityEntry.Entity;
+        }
+
+        public RoomModel ChangeStatusRoom(int roomId, RoomStatus roomStatus)
+        {
+            RoomModel oldRoom = _context.Rooms.Include(p => p.ShowModels).Where(p => p.Id == roomId).Single();
+            if (oldRoom.ShowModels.Any(p => p.StartTime.Date >= DateTime.Now.Date) && roomStatus == RoomStatus.REPAIRING) return null;
+            oldRoom.RoomStatus = roomStatus;
             EntityEntry<RoomModel> entityEntry = _context.Rooms.Update(oldRoom);
             _context.SaveChanges();
             return entityEntry.Entity;

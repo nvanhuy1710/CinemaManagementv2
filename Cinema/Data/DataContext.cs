@@ -57,6 +57,12 @@ namespace Cinema.Data
                 .Property(u => u.RoomStatus)
                 .HasConversion<string>()
                 .HasMaxLength(50);
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<BillModel>()
+                .Property(u => u.BillStatus)
+                .HasConversion<string>()
+                .HasMaxLength(50);
         }
     }
 }

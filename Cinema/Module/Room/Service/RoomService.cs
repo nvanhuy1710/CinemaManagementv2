@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Cinema.Enum;
 using Cinema.Model;
 using Cinema.Module.Room.DTO;
 using Cinema.Module.Room.Repository;
@@ -41,6 +42,31 @@ namespace Cinema.Module.Room.Service
             return roomDTO;
         }
 
+        public RoomDTO UpdateRoom(RoomDTO room)
+        {
+            if(GetRoom(room.Id).RoomStatus != Enum.RoomStatus.REPAIRING)
+            {
+                throw new InvalidOperationException("The room must be in a state of repairing to be updated!");
+            }
+            if (!CheckExistName(room.Name))
+            {
+                throw new InvalidOperationException($"Name: '{room.Name}' existed!");
+            }
+            foreach(SeatDTO seatDTO in _seatService.GetSeatByRoomId(room.Id))
+            {
+                _seatService.DeleteSeat(seatDTO.Id);
+            }
+            RoomDTO roomDTO = _mapper.Map<RoomDTO>(_roomRepository.UpdateRoom(_mapper.Map<RoomModel>(room)));
+            List<SeatDTO> seatDTOs = new List<SeatDTO>();
+            foreach (SeatDTO seat in room.Seats)
+            {
+                seat.RoomId = roomDTO.Id;
+                seatDTOs.Add(_seatService.AddSeat(seat));
+            }
+            roomDTO.Seats = seatDTOs;
+            return roomDTO;
+        }
+
         public void DeleteRoom(int id)
         {
             RoomModel room = _roomRepository.GetRoom(id);
@@ -61,15 +87,6 @@ namespace Cinema.Module.Room.Service
             return result;
         }
 
-        public RoomDTO UpdateRoom(RoomDTO room)
-        {
-            if (!CheckExistName(room.Name))
-            {
-                throw new InvalidOperationException($"Name: '{room.Name}' existed!");
-            }
-            throw new NotImplementedException();
-        }
-
         private bool CheckExistName(string name)
         {
             if(_roomRepository.GetRoom(name) != null)
@@ -77,6 +94,11 @@ namespace Cinema.Module.Room.Service
                 return false;
             }
             return true;
+        }
+
+        public void ChangeStatusRoom(int roomId, RoomStatus roomStatus)
+        {
+            if (_roomRepository.ChangeStatusRoom(roomId, roomStatus) == null) throw new InvalidOperationException("Room have showtime!");
         }
     }
 }

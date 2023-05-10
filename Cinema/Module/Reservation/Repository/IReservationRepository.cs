@@ -10,5 +10,9 @@ namespace Cinema.Module.Reservation.Repository
         List<ReservationModel> GetReservationByShowId(int showId);
 
         List<ReservationModel> GetReservationByBillId(int billId);
+
+        List<ReservationModel> GetReservationBySeatId(int seatId);
+
+        ReservationModel UpdateReservation(ReservationModel reservation);
     }
 }

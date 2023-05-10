@@ -5,5 +5,5 @@
         READY,
         REPAIRING,
         DELETED
-    }
+    }   
 }

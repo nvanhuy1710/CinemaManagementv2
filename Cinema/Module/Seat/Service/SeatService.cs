@@ -41,6 +41,12 @@ namespace Cinema.Module.Seat.Service
 
         public void DeleteSeat(int id)
         {
+            List<ReservationModel> reservationModels = _reservationRepository.GetReservationBySeatId(id);
+            foreach(ReservationModel reservationModel in reservationModels)
+            {
+                reservationModel.SeatId = null;
+                _reservationRepository.UpdateReservation(reservationModel);
+            }
             _seatRepository.DeleteSeat(id);
         }
 

@@ -1,4 +1,5 @@
-﻿using Cinema.Module.Film.Service;
+﻿using Cinema.Enum;
+using Cinema.Module.Film.Service;
 using Cinema.Module.Room.DTO;
 using Cinema.Module.Room.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -51,6 +52,36 @@ namespace Cinema.Controllers
         {
             _roomService.DeleteRoom(id);
             return NoContent();
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut("room")]
+        public IActionResult UpdateRoom([FromBody] RoomDTO roomDTO)
+        {
+            try
+            {
+                RoomDTO result = _roomService.UpdateRoom(roomDTO);
+                return Ok(result);
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut("room/status/{id}")]
+        public IActionResult ChangeStatusRoom(int id, RoomStatus roomStatus)
+        {
+            try
+            {
+               _roomService.ChangeStatusRoom(id, roomStatus);
+                return Ok();
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
