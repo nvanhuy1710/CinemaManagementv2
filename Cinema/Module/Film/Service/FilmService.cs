@@ -35,7 +35,7 @@ namespace Cinema.Module.Film.Service
         {
             filmDTO.PosterUrl = PosterUrl.Substring(PosterUrl.IndexOf("wwwroot"));
             filmDTO.AdPosterUrl = AdPosterUrl.Substring(AdPosterUrl.IndexOf("wwwroot"));
-            filmDTO.FilmStatus = Enum.FilmStatus.NOSCHEDULED;
+            filmDTO.FilmStatus = Enum.FilmStatus.AVAILABLE;
             filmDTO.ReleaseDate = filmDTO.ReleaseDate.Date;
             FilmModel model = _filmRepository.AddFilm(_mapper.Map<FilmModel>(filmDTO));
             foreach(GenreDTO genreDTO in filmDTO.Genres)
