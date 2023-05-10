@@ -8,5 +8,7 @@ namespace Cinema.Module.Bill.Service
         BillDTO AddBill(BillDTO bill);
 
         List<BillDTO> GetBillByUserId(int userId);
+
+        void Refund(int showId);
     }
 }

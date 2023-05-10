@@ -55,6 +55,13 @@ namespace Cinema.Controllers
             return Unauthorized();
         }
 
+        [HttpGet("bill/refund/{id}")]
+        public IActionResult Refund(int id)
+        {
+            _billService.Refund(id);
+            return Ok();
+        }
+
         [NonAction]
         private UserDTO GetCurrentUser()
         {

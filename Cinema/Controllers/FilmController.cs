@@ -50,7 +50,14 @@ namespace Cinema.Controllers
 
         [AllowAnonymous]
         [HttpGet("film")]
-        public IActionResult GetFilms()
+        public IActionResult GetFilms(string? name = null)
+        {
+            return Ok(_filmService.GetFilms(name));
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("film/all")]
+        public IActionResult GetAllFilms()
         {
             return Ok(_filmService.GetFilms());
         }

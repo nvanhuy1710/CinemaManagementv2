@@ -28,27 +28,41 @@ namespace Cinema.Module.Film.Repository
             _context.SaveChanges();
         }
 
+        public List<FilmModel> GetAllFilms()
+        {
+            return _context.Films.ToList();
+        }
+
         public List<FilmModel> GetCurrentFilms()
         {
             List<FilmModel> filmModels = _context.Films.Include(p => p.ShowModels).Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).ToList();
             List<FilmModel> currentFilms = filmModels.
-                Where(p => p.ReleaseDate <= DateTime.Now.Date && p.ShowModels.Any(y => y.StartTime.Date >= DateTime.Now.Date)).ToList();
+                Where(p => p.ReleaseDate <= DateTime.Now.Date && p.FilmStatus != Enum.FilmStatus.DELETED).ToList();
             return currentFilms;
         }
 
         public FilmModel GetFilm(int id)
         {
-            return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).Where(p => p.Id == id).Single();
+            return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).
+                Where(p => p.Id == id).Single();
+        }
+
+        public List<FilmModel> GetFilms(string name)
+        {
+            return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).
+                Where(p => p.Name == name).ToList();
         }
 
         public List<FilmModel> GetFilms()
         {
-            return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).ToList();
+            return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).
+                Where(p => p.FilmStatus != Enum.FilmStatus.DELETED).ToList();
         }
 
         public List<FilmModel> GetIncomingFilms()
         {
-            return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).Where(p => p.ReleaseDate >= DateTime.Now.Date).ToList();
+            return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).
+                Where(p => p.ReleaseDate >= DateTime.Now.Date && p.FilmStatus != Enum.FilmStatus.DELETED).ToList();
         }
 
         public FilmModel UpdateFilm(FilmModel film)

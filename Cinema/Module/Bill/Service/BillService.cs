@@ -2,10 +2,14 @@
 using Cinema.Model;
 using Cinema.Module.Bill.DTO;
 using Cinema.Module.Bill.Repository;
+using Cinema.Module.Film.Service;
+using Cinema.Module.Food.Service;
 using Cinema.Module.FoodOrder.DTO;
 using Cinema.Module.FoodOrder.Service;
 using Cinema.Module.Reservation.Repository;
+using Cinema.Module.Room.Service;
 using Cinema.Module.Seat.DTO;
+using Cinema.Module.Seat.Service;
 using Cinema.Module.Show.Service;
 using Cinema.Module.User.Service;
 
@@ -22,7 +26,15 @@ namespace Cinema.Module.Bill.Service
 
         private readonly IShowService _showService;
 
+        private readonly IRoomService _roomService;
+
+        private readonly IFilmService _filmService;
+
+        private readonly ISeatService _seatService;
+
         private readonly IUserService _userService;
+
+        private readonly IFoodService _foodService;
 
         private readonly IMapper _mapper;
 
@@ -30,7 +42,11 @@ namespace Cinema.Module.Bill.Service
             IFoodOrderService foodOrderService,
             IReservationRepository reservationRepository,
             IShowService showService,
-            IUserService userService)
+            IUserService userService,
+            IRoomService roomService,
+            IFilmService filmService,
+            ISeatService seatService,
+            IFoodService foodService)
         {
             _billRepository = billRepository;
             _mapper = mapper;
@@ -38,15 +54,32 @@ namespace Cinema.Module.Bill.Service
             _reservationRepository = reservationRepository;
             _userService = userService;
             _showService = showService;
+            _roomService = roomService;
+            _filmService = filmService;
+            _seatService = seatService;
+            _foodService = foodService;
         }
 
         public BillDTO AddBill(BillDTO bill)
         {
-            if((DateTime.Today.Year - _userService.GetUser(bill.UserId).Birth.Year) < _showService.GetShow(bill.Id).AgeLimit) 
+            if((DateTime.Today.Year - _userService.GetUser(bill.UserId).Birth.Year) < _showService.GetShow(bill.ShowId).AgeLimit) 
             {
                 throw new ArgumentException("User not enough old!");
             }
             bill.DatePurchased = DateTime.Now.Date;
+            int totalCost = 0;
+            foreach(int seatId in bill.SeatIds)
+            {
+                totalCost += _seatService.GetSeat(seatId).SeatTypeDTO.Cost;
+            }
+            if(bill.FoodOrderDTOs != null)
+            {
+                foreach (FoodOrderDTO foodOrderDTO in bill.FoodOrderDTOs)
+                {
+                    totalCost += _foodService.GetFood(foodOrderDTO.FoodId).Cost * foodOrderDTO.Count;
+                }
+            }
+            bill.TotalCost = totalCost;
             BillModel result = _billRepository.AddBill(_mapper.Map<BillModel>(bill));
             if(bill.FoodOrderDTOs != null)
             {

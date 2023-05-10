@@ -20,5 +20,7 @@ namespace Cinema.Module.Film.Service
         FilmDTO GetFilm(int id);
 
         List<FilmDTO> GetFilms();
+
+        List<FilmDTO> GetFilms(string name);
     }
 }

@@ -6,9 +6,13 @@ namespace Cinema.Module.Film.Repository
     {
         FilmModel AddFilm(FilmModel film);
 
+        List<FilmModel> GetFilms(string name);
+
         FilmModel GetFilm(int id);
 
         List<FilmModel> GetFilms();
+
+        List<FilmModel> GetAllFilms();
 
         List<FilmModel> GetCurrentFilms();
 

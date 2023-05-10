@@ -144,6 +144,19 @@ namespace Cinema.Module.Film.Service
             }).ToList();
         }
 
+        public List<FilmDTO> GetFilms(string name)
+        {
+            if(name == null) return GetFilms();
+            return _filmRepository.GetFilms(name).Select(model =>
+            {
+                FilmDTO filmDTO = _mapper.Map<FilmDTO>(model);
+                filmDTO.Genres = model.FilmGenreModels.Select(p => _mapper.Map<GenreDTO>(p.Genre)).ToList();
+                filmDTO.PosterUrl = GetFileUrl(filmDTO.PosterUrl);
+                filmDTO.AdPosterUrl = GetFileUrl(filmDTO.AdPosterUrl, true);
+                return filmDTO;
+            }).ToList();
+        }
+
         public string SavePoster(string name, string director, IFormFile file, bool isAdPoster = false)
         {
             string Filepath = GetFolderPath(RemoveSpecialCharacters(name) + "_" + RemoveSpecialCharacters(director));
