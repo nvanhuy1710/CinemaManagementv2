@@ -13,7 +13,7 @@ namespace Cinema.Model
 
         public int BillId { get; set; }
 
-        public int SeatId { get; set; }
+        public int? SeatId { get; set; }
 
         public int ShowId { get; set; }
 

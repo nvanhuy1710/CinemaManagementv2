@@ -8,6 +8,7 @@ namespace Cinema.Enum
     {
         NOSCHEDULED,
         SCHEDULED,
+        AVAILABLE,
         DELETED,
     }
 }

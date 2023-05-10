@@ -19,6 +19,8 @@ namespace Cinema.Model
 
         public int RoomId { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         [ForeignKey("FilmId")]
         public virtual FilmModel Film { get; set; }
 

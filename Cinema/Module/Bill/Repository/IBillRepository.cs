@@ -7,5 +7,10 @@ namespace Cinema.Module.Bill.Repository
         BillModel AddBill(BillModel model);
 
         List<BillModel> GetBillByUserId(int userId);
+
+        List<BillModel> GetBill(int id);
+
+        void Refund(int id);
+
     }
 }

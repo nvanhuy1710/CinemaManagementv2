@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Cinema.Model;
+using Cinema.Module.Bill.Service;
 using Cinema.Module.Film.DTO;
 using Cinema.Module.Film.Service;
 using Cinema.Module.Room.DTO;
@@ -46,7 +47,9 @@ namespace Cinema.Module.Show.Service
 
         public void DeleteShow(int id)
         {
-            throw new NotImplementedException();
+            ShowModel showModel = _showRepository.GetShow(id);
+            showModel.IsDeleted = true;
+            _showRepository.UpdateShow(showModel);
         }
 
         public ShowDTO GetShow(int id)

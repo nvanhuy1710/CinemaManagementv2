@@ -17,6 +17,7 @@ namespace Cinema.Module.Show.Repository
 
         public ShowModel AddShow(ShowModel model)
         {
+            model.IsDeleted = false;
             EntityEntry<ShowModel> entityEntry = _context.Shows.Add(model);
             _context.SaveChanges();
             return entityEntry.Entity;
@@ -29,12 +30,12 @@ namespace Cinema.Module.Show.Repository
 
         public ShowModel GetShow(int id)
         {
-            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.Id == id).Single();
+            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.Id == id && p.IsDeleted).Single();
         }
 
         public List<ShowModel> GetShowInTime(DateTime startDate, DateTime endDate)
         {
-            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.StartTime.Date >= startDate && p.StartTime.Date <= endDate).ToList();
+            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.StartTime.Date >= startDate && p.StartTime.Date <= endDate && p.IsDeleted).ToList();
         }
 
         public ShowModel UpdateShow(ShowModel model)
@@ -51,7 +52,7 @@ namespace Cinema.Module.Show.Repository
 
         public List<List<ShowModel>> GetShowByInfor(int filmId, int roomId, DateTime date)
         {
-            IQueryable<ShowModel> query = _context.Shows.Include(p => p.Film).Include(p => p.Room);
+            IQueryable<ShowModel> query = _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.IsDeleted);
 
             if (filmId != 0)
             {

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Cinema.Enum;
 
 namespace Cinema.Model
 {
@@ -14,6 +15,11 @@ namespace Cinema.Model
         public int UserId { get; set; }
 
         public DateTime DatePurchased { get; set; }
+
+        public int TotalCost { get; set; }
+
+        [EnumDataType(typeof(string))]
+        public BillStatus BillStatus { get; set; }
 
         [ForeignKey("UserId")]
         public virtual UserModel UserModel { get; set; }

@@ -79,5 +79,16 @@ namespace Cinema.Module.Bill.Service
                 return billDTO;
             }).ToList();
         }
+
+        public void Refund(int showId)
+        {
+            List<ReservationModel> reservationModels = _reservationRepository.GetReservationByShowId(showId);
+            List<int> billIds = reservationModels.Select(p => p.BillId).Distinct().ToList();
+            foreach(int billId in billIds)
+            {
+                _billRepository.Refund(billId);
+            }
+            _showService.DeleteShow(showId);
+        }
     }
 }

@@ -16,7 +16,8 @@ namespace Cinema.Module.Bill.DTO
 
         public DateTime? DatePurchased { get; set; }
 
-        public int? TotalCost { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public int TotalCost { get; set; }
 
         public List<int> SeatIds { get; set; }
 
