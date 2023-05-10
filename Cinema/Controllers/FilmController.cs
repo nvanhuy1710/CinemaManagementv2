@@ -140,5 +140,12 @@ namespace Cinema.Controllers
             _filmService.DeleteFilm(id);
             return NoContent();
         }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpDelete("film")]
+        public IActionResult GetDeletedFilms(string? name = null)
+        {
+            return Ok(_filmService.GetDeletedFilms(name));
+        }
     }
 }

@@ -18,6 +18,8 @@ namespace Cinema.Module.Film.Repository
 
         List<FilmModel> GetIncomingFilms();
 
+        List<FilmModel> GetDeletedFilms(string name);
+
         FilmModel UpdateFilm(FilmModel film);
 
         void UpdateImage(int id, string Poster, string AdPoster);

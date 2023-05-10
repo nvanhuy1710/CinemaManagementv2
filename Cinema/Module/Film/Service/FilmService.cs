@@ -212,5 +212,10 @@ namespace Cinema.Module.Film.Service
 
             return result;
         }
+
+        public List<FilmDTO> GetDeletedFilms(string name)
+        {
+            return _filmRepository.GetDeletedFilms(name).Select(p => _mapper.Map<FilmDTO>(p)).ToList();
+        }
     }
 }

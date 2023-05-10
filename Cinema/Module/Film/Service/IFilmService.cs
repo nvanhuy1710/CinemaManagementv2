@@ -22,5 +22,7 @@ namespace Cinema.Module.Film.Service
         List<FilmDTO> GetFilms();
 
         List<FilmDTO> GetFilms(string name);
+
+        List<FilmDTO> GetDeletedFilms(string name);
     }
 }

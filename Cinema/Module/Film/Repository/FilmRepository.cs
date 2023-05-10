@@ -41,6 +41,14 @@ namespace Cinema.Module.Film.Repository
             return currentFilms;
         }
 
+        public List<FilmModel> GetDeletedFilms(string name)
+        {
+            IQueryable<FilmModel> query = _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).
+                Where(p => p.FilmStatus == Enum.FilmStatus.DELETED);
+            if (name != null) return query.Where(p => p.Name.Contains(name)).ToList();
+            else return query.ToList();
+        }
+
         public FilmModel GetFilm(int id)
         {
             return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).
