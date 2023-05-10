@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="image\**" />
+    <Compile Remove="Module\Food\Repo\**" />
     <Content Remove="image\**" />
+    <Content Remove="Module\Food\Repo\**" />
     <EmbeddedResource Remove="image\**" />
+    <EmbeddedResource Remove="Module\Food\Repo\**" />
     <None Remove="image\**" />
+    <None Remove="Module\Food\Repo\**" />
   </ItemGroup>
 
   <ItemGroup>
