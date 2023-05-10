@@ -52,7 +52,7 @@ namespace Cinema.Module.Show.Repository
 
         public List<List<ShowModel>> GetShowByInfor(int filmId, int roomId, DateTime date)
         {
-            IQueryable<ShowModel> query = _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.IsDeleted);
+            IQueryable<ShowModel> query = _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => !p.IsDeleted);
 
             if (filmId != 0)
             {

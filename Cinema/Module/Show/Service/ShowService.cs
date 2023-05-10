@@ -4,6 +4,7 @@ using Cinema.Module.Bill.Service;
 using Cinema.Module.Film.DTO;
 using Cinema.Module.Film.Service;
 using Cinema.Module.Room.DTO;
+using Cinema.Module.Room.Service;
 using Cinema.Module.Show.DTO;
 using Cinema.Module.Show.Repository;
 
@@ -16,19 +17,30 @@ namespace Cinema.Module.Show.Service
 
         private readonly IFilmService _filmService;
 
+        private readonly IRoomService _roomService;
+
         private readonly IMapper _mapper;
 
-        public ShowService(IMapper mapper, IShowRepository showRepository, IFilmService filmService)
+        public ShowService(IMapper mapper, IShowRepository showRepository, IFilmService filmService, IRoomService roomService)
         {
             _mapper = mapper;
             _showRepository = showRepository;
             _filmService = filmService;
+            _roomService = roomService;
         }
 
         public ShowDTO AddShow(ShowDTO showDTO)
         {
             FilmDTO filmDTO = _filmService.GetFilm(showDTO.FilmId);
             showDTO.EndTime = showDTO.StartTime.AddMinutes(filmDTO.Length);
+            if(_roomService.GetRoom(showDTO.RoomId).RoomStatus == Enum.RoomStatus.REPAIRING)
+            {
+                throw new InvalidOperationException("Room is repairing");
+            }
+            if (_filmService.GetFilm(showDTO.FilmId).FilmStatus == Enum.FilmStatus.DELETED)
+            {
+                throw new InvalidOperationException("Film deleted");
+            }
             List<List<ShowDTO>> showDTOs = GetShowByInfor(0, showDTO.RoomId, showDTO.StartTime.Date);
             foreach (List<ShowDTO> shows in showDTOs)
             {
