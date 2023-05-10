@@ -26,7 +26,7 @@ namespace Cinema.Module.Room.Service
 
         public RoomDTO AddRoom(RoomDTO room)
         {
-            if(!CheckExistName(room.Name))
+            if(_roomRepository.GetRoom(room.Name) != null)
             {
                 throw new InvalidOperationException($"Name: '{room.Name}' existed!");
             }
@@ -48,7 +48,8 @@ namespace Cinema.Module.Room.Service
             {
                 throw new InvalidOperationException("The room must be in a state of repairing to be updated!");
             }
-            if (!CheckExistName(room.Name))
+            RoomModel oldRoom = _roomRepository.GetRoom(room.Name);
+            if (oldRoom.Name == room.Name && oldRoom.Id != room.Id)
             {
                 throw new InvalidOperationException($"Name: '{room.Name}' existed!");
             }
@@ -85,15 +86,6 @@ namespace Cinema.Module.Room.Service
         {
             List<RoomDTO> result = _roomRepository.GetRooms().Select(p => GetRoom(p.Id)).ToList();
             return result;
-        }
-
-        private bool CheckExistName(string name)
-        {
-            if(_roomRepository.GetRoom(name) != null)
-            {
-                return false;
-            }
-            return true;
         }
 
         public void ChangeStatusRoom(int roomId, RoomStatus roomStatus)
