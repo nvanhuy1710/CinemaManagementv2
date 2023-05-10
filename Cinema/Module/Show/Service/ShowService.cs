@@ -3,10 +3,12 @@ using Cinema.Model;
 using Cinema.Module.Bill.Service;
 using Cinema.Module.Film.DTO;
 using Cinema.Module.Film.Service;
+using Cinema.Module.Reservation.Repository;
 using Cinema.Module.Room.DTO;
 using Cinema.Module.Room.Service;
 using Cinema.Module.Show.DTO;
 using Cinema.Module.Show.Repository;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Cinema.Module.Show.Service
 {
@@ -19,14 +21,17 @@ namespace Cinema.Module.Show.Service
 
         private readonly IRoomService _roomService;
 
+        private readonly IReservationRepository _reservationRepository;
+
         private readonly IMapper _mapper;
 
-        public ShowService(IMapper mapper, IShowRepository showRepository, IFilmService filmService, IRoomService roomService)
+        public ShowService(IMapper mapper, IShowRepository showRepository, IFilmService filmService, IRoomService roomService, IReservationRepository reservationRepository)
         {
             _mapper = mapper;
             _showRepository = showRepository;
             _filmService = filmService;
             _roomService = roomService;
+            _reservationRepository = reservationRepository;
         }
 
         public ShowDTO AddShow(ShowDTO showDTO)
@@ -76,17 +81,30 @@ namespace Cinema.Module.Show.Service
 
         public ShowDTO UpdateShow(ShowDTO showDTO)
         {
+            FilmDTO filmDTO = _filmService.GetFilm(showDTO.FilmId);
+            showDTO.EndTime = showDTO.StartTime.AddMinutes(filmDTO.Length);
+            if (_roomService.GetRoom(showDTO.RoomId).RoomStatus == Enum.RoomStatus.REPAIRING)
+            {
+                throw new InvalidOperationException("Room is repairing");
+            }
+            if (_filmService.GetFilm(showDTO.FilmId).FilmStatus == Enum.FilmStatus.DELETED)
+            {
+                throw new InvalidOperationException("Film deleted");
+            }
             List<List<ShowDTO>> showDTOs = GetShowByInfor(0, showDTO.RoomId, showDTO.StartTime.Date);
             foreach (List<ShowDTO> shows in showDTOs)
             {
-                foreach(ShowDTO show in shows)
+                foreach (ShowDTO show in shows)
                 {
-                    if (showDTO.StartTime <= show.EndTime && showDTO.StartTime.Date == show.EndTime.Date)
+                    if (((showDTO.StartTime <= show.EndTime && showDTO.StartTime >= show.StartTime) ||
+                        (showDTO.EndTime <= show.EndTime && showDTO.EndTime >= show.StartTime)) &&
+                        showDTO.StartTime.Date == show.EndTime.Date)
                     {
                         throw new InvalidOperationException("This room has schedule conflict");
                     }
                 }
             }
+            if(!_reservationRepository.GetReservationByShowId(showDTO.Id).IsNullOrEmpty()) throw new InvalidOperationException("This show had ticket");
             return MapModelToDTO(_showRepository.UpdateShow(_mapper.Map<ShowModel>(showDTO)));
         }
 
