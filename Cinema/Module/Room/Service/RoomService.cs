@@ -49,7 +49,7 @@ namespace Cinema.Module.Room.Service
                 throw new InvalidOperationException("The room must be in a state of repairing to be updated!");
             }
             RoomModel oldRoom = _roomRepository.GetRoom(room.Name);
-            if (oldRoom.Name == room.Name && oldRoom.Id != room.Id)
+            if (oldRoom != null && oldRoom.Name == room.Name && oldRoom.Id != room.Id)
             {
                 throw new InvalidOperationException($"Name: '{room.Name}' existed!");
             }
