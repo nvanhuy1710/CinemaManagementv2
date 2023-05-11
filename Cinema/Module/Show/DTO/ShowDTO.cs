@@ -17,6 +17,8 @@ namespace Cinema.Module.Show.DTO
 
         public string? FilmName { get; set; }
 
+        public string? RoomName { get; set; }
+
         public string? Poster { get; set; }
 
         public int FilmId { get; set; }
