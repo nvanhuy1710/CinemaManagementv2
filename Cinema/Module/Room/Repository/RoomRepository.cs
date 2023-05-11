@@ -66,7 +66,14 @@ namespace Cinema.Module.Room.Repository
 
         public RoomModel UpdateRoom(RoomModel room)
         {
-            RoomModel oldRoom = _context.Rooms.Where(p => p.Id == room.Id).Single();
+            RoomModel oldRoom = _context.Rooms.Include(p => p.ShowModels).Where(p => p.Id == room.Id).Single();
+            if (room.RoomStatus == RoomStatus.DELETED)
+            {             
+                if (oldRoom.ShowModels.Any(p => p.StartTime.Date >= DateTime.Now.Date))
+                {
+                    throw new InvalidOperationException("Room has a schedule but hasn't shown yet");
+                }
+            }
             oldRoom.Name = room.Name;
             oldRoom.Row = room.Row;
             oldRoom.Col = room.Col;
