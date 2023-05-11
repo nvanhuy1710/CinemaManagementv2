@@ -137,8 +137,14 @@ namespace Cinema.Controllers
         [HttpDelete("film/{id}")]
         public IActionResult DeleteFilm(int id)
         {
-            _filmService.DeleteFilm(id);
-            return NoContent();
+            try
+            {
+                _filmService.DeleteFilm(id);
+                return NoContent();
+            } catch(InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [Authorize(Roles = "ADMIN")]

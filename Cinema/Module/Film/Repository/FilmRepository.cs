@@ -76,6 +76,14 @@ namespace Cinema.Module.Film.Repository
         public FilmModel UpdateFilm(FilmModel film)
         {
             FilmModel OldFilm = GetFilm(film.Id);
+            if(film.FilmStatus == Enum.FilmStatus.DELETED)
+            {
+                if(_context.Films.Include(p => p.ShowModels).Where(p => p.Id == film.Id).
+                    Any(p => p.ShowModels.Any(y => y.StartTime.Date >= DateTime.Now.Date)))
+                {
+                    throw new InvalidOperationException("The movie has a schedule but hasn't shown yet");
+                }
+            }
             OldFilm.Name = film.Name;
             OldFilm.Country = film.Country;
             OldFilm.Length = film.Length;
