@@ -25,6 +25,11 @@ namespace Cinema.Module.Room.Repository
 
         public void DeleteRoom(int id)
         {
+            RoomModel oldRoom = _context.Rooms.Include(p => p.ShowModels).Where(p => p.Id == id).Single();
+            if (oldRoom.ShowModels.Any(p => p.StartTime.Date >= DateTime.Now.Date))
+            {
+                throw new InvalidOperationException("Room has a schedule but hasn't shown yet");
+            }
             _context.Rooms.Remove(_context.Rooms.Where(p => p.Id == id).Single());
         }
 

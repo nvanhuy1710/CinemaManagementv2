@@ -50,8 +50,14 @@ namespace Cinema.Controllers
         [HttpDelete("room/{id}")]
         public IActionResult DeleteRooms(int id)
         {
-            _roomService.DeleteRoom(id);
-            return NoContent();
+            try
+            {
+                _roomService.DeleteRoom(id);
+                return NoContent();
+            } catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [Authorize(Roles = "ADMIN")]
