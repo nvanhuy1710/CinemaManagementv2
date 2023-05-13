@@ -25,6 +25,7 @@ using Cinema.Module.SeatType.Repository;
 using Cinema.Module.SeatType.Service;
 using Cinema.Module.Show.Repository;
 using Cinema.Module.Show.Service;
+using Cinema.Module.Statistic.Service;
 using Cinema.Module.User.Repository;
 using Cinema.Module.User.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -74,6 +75,7 @@ builder.Services.AddScoped<IBillRepository, BillRepository>();
 builder.Services.AddScoped<IBillService, BillService>();
 builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<IStatisticService, StatisticService>();
 builder.Services.AddScoped<TokenProvider>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
