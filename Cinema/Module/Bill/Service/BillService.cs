@@ -10,6 +10,7 @@ using Cinema.Module.Reservation.Repository;
 using Cinema.Module.Room.Service;
 using Cinema.Module.Seat.DTO;
 using Cinema.Module.Seat.Service;
+using Cinema.Module.Show.DTO;
 using Cinema.Module.Show.Service;
 using Cinema.Module.User.Service;
 
@@ -62,7 +63,7 @@ namespace Cinema.Module.Bill.Service
 
         public BillDTO AddBill(BillDTO bill)
         {
-            if((DateTime.Today.Year - _userService.GetUser(bill.UserId).Birth.Year) < _showService.GetShow(bill.ShowId).AgeLimit) 
+            if((DateTime.Today.Year - _userService.GetUser(bill.UserId).Birth.Year) < _showService.GetShow(bill.ShowId).AgeLimit && _userService.GetUser(bill.UserId).RoleName == "USER") 
             {
                 throw new ArgumentException("User not enough old!");
             }
@@ -115,6 +116,12 @@ namespace Cinema.Module.Bill.Service
 
         public void Refund(int showId)
         {
+            ShowDTO showDTO = _showService.GetShow(showId);
+            if(showDTO.EndTime <= DateTime.Now)
+            {
+                _showService.DeleteShow(showId);
+                return;
+            }
             List<ReservationModel> reservationModels = _reservationRepository.GetReservationByShowId(showId);
             List<int> billIds = reservationModels.Select(p => p.BillId).Distinct().ToList();
             foreach(int billId in billIds)
