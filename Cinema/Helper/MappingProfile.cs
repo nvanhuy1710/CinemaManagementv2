@@ -49,7 +49,8 @@ namespace Cinema.Helper
             CreateMap<FoodOrderModel, FoodOrderDTO>().ForMember(dest => dest.FoodDTO, opt => opt.MapFrom(src => src.FoodModel));
             CreateMap<FoodOrderDTO, FoodOrderModel>();
             CreateMap<BillDTO, BillModel>();
-            CreateMap<BillModel, BillDTO>().ForMember(dest => dest.SeatIds, opt => opt.MapFrom(src => src.ReservationModels.Select(p => p.SeatId).ToList()));
+            CreateMap<BillModel, BillDTO>().ForMember(dest => dest.SeatIds, opt => opt.MapFrom(src => src.ReservationModels.Select(p => p.SeatId).ToList())).
+                                           ForMember(dest => dest.FoodOrderDTOs, opt => opt.MapFrom(src => src.FoodOrderModels));
         }
     }
 }

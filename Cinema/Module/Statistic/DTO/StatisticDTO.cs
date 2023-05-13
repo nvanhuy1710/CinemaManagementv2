@@ -6,6 +6,12 @@
 
         public List<Dictionary<string, int>> FilmRevenue { get; set; } = new List<Dictionary<string, int>>();
 
-        public List<int> QuarterRevenue { get; set; } = new List<int>();
+        public Dictionary<string, int> SeatRevenue { get; set; } = new Dictionary<string, int>();
+
+        public List<int> SeatSold = new List<int>();
+
+        public List<int> SeatRefund = new List<int>();
+
+        public List<int> FoodRevenue = new List<int>();
     }
 }
