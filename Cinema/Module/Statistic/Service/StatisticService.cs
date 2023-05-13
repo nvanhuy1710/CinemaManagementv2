@@ -39,13 +39,13 @@ namespace Cinema.Module.Statistic.Service
                         {
                             int Revenue = FilmRevenueInMonth[key];
 
-                            Revenue += 1;
+                            Revenue += billDTO.SeatIds.Count;
 
                             FilmRevenueInMonth[key] = Revenue;
                         }
                         else
                         {
-                            FilmRevenueInMonth.Add(key, 1);
+                            FilmRevenueInMonth.Add(key, billDTO.SeatIds.Count);
                         }
                     }
                 }
