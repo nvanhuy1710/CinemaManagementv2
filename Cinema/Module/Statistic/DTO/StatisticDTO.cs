@@ -8,10 +8,10 @@
 
         public Dictionary<string, int> SeatRevenue { get; set; } = new Dictionary<string, int>();
 
-        public List<int> SeatSold = new List<int>();
+        public List<int> SeatSold { get; set; } = new List<int>();
 
-        public List<int> SeatRefund = new List<int>();
+        public List<int> SeatRefund { get; set; } = new List<int>();
 
-        public List<int> FoodRevenue = new List<int>();
+        public List<int> FoodRevenue { get; set; } = new List<int>();
     }
 }
