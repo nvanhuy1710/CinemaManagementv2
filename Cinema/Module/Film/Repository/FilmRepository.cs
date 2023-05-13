@@ -79,7 +79,7 @@ namespace Cinema.Module.Film.Repository
             if(film.FilmStatus == Enum.FilmStatus.DELETED)
             {
                 if(_context.Films.Include(p => p.ShowModels).Where(p => p.Id == film.Id).
-                    Any(p => p.ShowModels.Any(y => y.StartTime.Date >= DateTime.Now.Date)))
+                    Any(p => p.ShowModels.Any(y => y.StartTime.Date >= DateTime.Now.Date && !y.IsDeleted)))
                 {
                     throw new InvalidOperationException("The movie has a schedule but hasn't shown yet");
                 }
