@@ -43,5 +43,13 @@ namespace Cinema.Module.Bill.Repository
             _context.Bills.Update(billModel);
             _context.SaveChanges();
         }
+
+        public List<BillModel> GetBillByDate(DateTime startDate, DateTime endDate)
+        {
+            return _context.Bills.Include(p => p.ReservationModels).
+                ThenInclude(y => y.ShowModel).ThenInclude(z => z.Film).Include(p => p.FoodOrderModels).
+                ThenInclude(y => y.FoodModel).Where(p => p.DatePurchased.Date >= startDate.Date &&
+                    p.DatePurchased.Date <= endDate.Date).ToList();
+        }
     }
 }

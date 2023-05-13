@@ -8,6 +8,8 @@ namespace Cinema.Module.Bill.Repository
 
         List<BillModel> GetBillByUserId(int userId);
 
+        List<BillModel> GetBillByDate(DateTime startDate, DateTime endDate);
+
         List<BillModel> GetBill(int id);
 
         void Refund(int id);

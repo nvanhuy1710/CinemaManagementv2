@@ -1,4 +1,5 @@
-﻿using Cinema.Module.FoodOrder.DTO;
+﻿using Cinema.Enum;
+using Cinema.Module.FoodOrder.DTO;
 using Cinema.Module.Show.DTO;
 using Cinema.Module.User.DTO;
 using Newtonsoft.Json;
@@ -18,6 +19,9 @@ namespace Cinema.Module.Bill.DTO
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int TotalCost { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public BillStatus BillStatus { get; set; }
 
         public List<int> SeatIds { get; set; }
 
