@@ -17,6 +17,9 @@ namespace Cinema.Module.Show.DTO
 
         public string? FilmName { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string? Director { get; set; }
+
         public string? RoomName { get; set; }
 
         public string? Poster { get; set; }
