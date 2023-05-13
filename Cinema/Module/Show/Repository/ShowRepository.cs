@@ -45,6 +45,7 @@ namespace Cinema.Module.Show.Repository
             oldShow.EndTime = model.EndTime;
             oldShow.FilmId = model.FilmId;
             oldShow.RoomId = model.RoomId;
+            oldShow.IsDeleted = model.IsDeleted;
             EntityEntry<ShowModel> entityEntry = _context.Shows.Update(oldShow);
             _context.SaveChanges();
             return entityEntry.Entity;
