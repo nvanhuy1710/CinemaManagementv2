@@ -34,7 +34,7 @@ namespace Cinema.Module.Statistic.Service
                     {
                         monthRevenue += billDTO.TotalCost;
                         quarterRevenue += billDTO.TotalCost;
-                        string key = billDTO.ShowDTO.FilmName + " - " + billDTO.ShowDTO.Director;
+                        string key = billDTO.ShowDTO.FilmName;
                         if (FilmRevenueInMonth.ContainsKey(key))
                         {
                             int Revenue = FilmRevenueInMonth[key];
