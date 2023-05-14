@@ -138,37 +138,6 @@ namespace Cinema.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [HttpGet("users/check-token")]
-        public IActionResult CheckToken(string email, string token)
-        {
-            try
-            {
-                string result = _userService.checkToken(token, email);
-                return Ok(result);
-            }
-            catch (InvalidOperationException e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpGet("users/reset-password")]
-        public IActionResult ResetPassword(string email, string token, string password)
-        {
-            try
-            {
-                _userService.ResetPassword(token, email, password);
-                return Ok("Password Change");
-            }
-            catch (InvalidOperationException e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-
         private UserDTO GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

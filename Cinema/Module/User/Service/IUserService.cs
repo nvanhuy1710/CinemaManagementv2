@@ -21,10 +21,6 @@ namespace Cinema.Module.User.Service
 
         void DeleteUser(int id);
 
-        string checkToken(string token, string email);
-
         void ForgotPassword(string email);
-
-        void ResetPassword(string token, string email, string password);
     }
 }

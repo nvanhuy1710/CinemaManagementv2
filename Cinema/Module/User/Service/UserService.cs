@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Internal;
+using Cinema.Helper;
 using Cinema.Model;
 using Cinema.Module.Account.DTO;
 using Cinema.Module.Account.Register;
@@ -129,27 +130,16 @@ namespace Cinema.Module.User.Service
             _accountService.ChangePassword(form.oldPassword, form.newPassword, _userRepository.GetUser(userId).AccountId);
         }
 
-        public string checkToken(string token, string email)
-        {
-            if (userPasswordResetCodes.ContainsKey(email) && userPasswordResetCodes[email] == token)
-            {
-                return userPasswordResetCodes[email];
-            }
-            else
-            {
-                throw new InvalidOperationException("Invalid token");
-            }
-        }
-
         public void ForgotPassword(string email)
         {
             try
             {
                 GetUserByEmail(email);
-                string resetCode = GenerateResetCode();
-                userPasswordResetCodes[email] = resetCode;
-
-                SendResetCodeEmail(email, resetCode);
+                string newPassword = GenerateNewPassword();
+                string newHashPassword = HashPassword.HashByPBKDF2(newPassword);
+                AccountDTO accountDTO = _accountService.GetAccount(email);
+                _accountService.ChangePassword(accountDTO.Password, newHashPassword, accountDTO.Id);
+                SendNewPassEmail(email, newPassword);
 
             }
             catch (InvalidOperationException)
@@ -171,12 +161,12 @@ namespace Cinema.Module.User.Service
             }
         }
 
-        private string GenerateResetCode()
+        private string GenerateNewPassword()
         {
-            return Guid.NewGuid().ToString("N").Substring(0, 5);
+            return Guid.NewGuid().ToString("N").Substring(0, 8);
         }
 
-        private void SendResetCodeEmail(string email, string resetCode)
+        private void SendNewPassEmail(string email, string newPassword)
         {
             var message = new MimeMessage();
             message.Sender = MailboxAddress.Parse("nvanhuy1710@gmail.com"); // Địa chỉ email người gửi, có thể là một địa chỉ tùy ý
@@ -184,7 +174,7 @@ namespace Cinema.Module.User.Service
             message.Subject = "Reset Password Code";
 
             var builder = new BodyBuilder();
-            builder.TextBody = $"Your password reset code is: {resetCode}";
+            builder.TextBody = $"Your new password is: {newPassword}";
 
             message.Body = builder.ToMessageBody();
 
