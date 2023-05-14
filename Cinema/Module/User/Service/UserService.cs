@@ -171,7 +171,7 @@ namespace Cinema.Module.User.Service
             var message = new MimeMessage();
             message.Sender = MailboxAddress.Parse("nvanhuy1710@gmail.com"); // Địa chỉ email người gửi, có thể là một địa chỉ tùy ý
             message.To.Add(MailboxAddress.Parse(email)); // Địa chỉ email của người nhận
-            message.Subject = "Reset Password";
+            message.Subject = "New Password";
 
             var builder = new BodyBuilder();
             builder.TextBody = $"Your new password is: {newPassword}";
