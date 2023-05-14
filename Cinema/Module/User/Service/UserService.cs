@@ -13,6 +13,7 @@ using Cinema.Module.User.Repository;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using Org.BouncyCastle.Crypto.Macs;
 using System.Security.Claims;
 using System.Transactions;
 
@@ -174,7 +175,14 @@ namespace Cinema.Module.User.Service
             message.Subject = "New Password";
 
             var builder = new BodyBuilder();
-            builder.TextBody = $"Your new password is: {newPassword}";
+            string body = $"<html><body><p>Xin chào,</p>" +
+                  $"<p>Theo yêu cầu của bạn, rạp phim <strong>LHD</strong> gửi lại cho bạn thông tin mật khẩu mới.</p>" +
+                  $"<p>Mật khẩu mới của bạn là: <strong>{newPassword}</strong></p>" +
+                  $"<p>Cảm ơn bạn đã sử dụng dịch vụ LHD. Chúc bạn một ngày tốt lành!</p>" +
+                  $"<p><br/></p>" +
+                  $"<p style=\"margin-top: -10px;\">Trân trọng,</p>" +
+                  $"<p style=\"margin-bottom: 0;\">LHD</p></body></html>";
+            builder.HtmlBody = body;
 
             message.Body = builder.ToMessageBody();
 
