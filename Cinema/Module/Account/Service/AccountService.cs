@@ -42,6 +42,11 @@ namespace Cinema.Module.Account.Service
             _accountRepository.ChangePassword(newPassword, id);
         }
 
+        public void ResetPassword(string newPassword, string email)
+        {
+            _accountRepository.ChangePassword(newPassword, GetAccount(email).Id);
+        }
+
         public void DeleteAccount(int id)
         {
             AccountModel accountModel = _accountRepository.GetAccount(id);

@@ -92,7 +92,7 @@ namespace Cinema.Controllers
         }
 
         [Authorize(Roles = "ADMIN")]
-        [HttpPost("admins/get-staff")]
+        [HttpGet("admins/get-staff")]
         public IActionResult GetStaff()
         {
             return Ok(_userService.GetStaff());
@@ -112,10 +112,57 @@ namespace Cinema.Controllers
         {
             try
             {
+                form.oldPassword = HashPassword.HashByPBKDF2(form.oldPassword);
+                form.newPassword = HashPassword.HashByPBKDF2(form.newPassword);
                 _userService.ChangePassword(form, GetCurrentUser().Id);
                 return NoContent();
             }
             catch(InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("users/forgot-password")]
+        public IActionResult ForgotPassword(string email)
+        {
+            try
+            {
+                _userService.ForgotPassword(email);
+                return Ok("Sent email");
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("users/check-token")]
+        public IActionResult CheckToken(string email, string token)
+        {
+            try
+            {
+                string result = _userService.checkToken(token, email);
+                return Ok(result);
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("users/reset-password")]
+        public IActionResult ResetPassword(string email, string token, string password)
+        {
+            try
+            {
+                _userService.ResetPassword(token, email, password);
+                return Ok("Password Change");
+            }
+            catch (InvalidOperationException e)
             {
                 return BadRequest(e.Message);
             }

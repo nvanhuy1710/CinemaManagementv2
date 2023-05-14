@@ -23,5 +23,7 @@ namespace Cinema.Module.Account.Service
         List<AccountDTO> GetAllAccounts();
 
         void ChangePassword(string oldPassword, string newPassword, int id);
+
+        void ResetPassword(string newPassword, string email);
     }
 }
