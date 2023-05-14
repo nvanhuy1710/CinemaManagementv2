@@ -145,14 +145,14 @@ namespace Cinema.Module.User.Service
         {
             try
             {
-                //GetUserByEmail(email);
+                GetUserByEmail(email);
                 string resetCode = GenerateResetCode();
                 userPasswordResetCodes[email] = resetCode;
 
                 SendResetCodeEmail(email, resetCode);
 
             }
-            catch (ArgumentNullException)
+            catch (InvalidOperationException)
             {
                 throw new InvalidOperationException("User does not exist");
             }
@@ -173,14 +173,14 @@ namespace Cinema.Module.User.Service
 
         private string GenerateResetCode()
         {
-            return Guid.NewGuid().ToString("N");
+            return Guid.NewGuid().ToString("N").Substring(0, 5);
         }
 
         private void SendResetCodeEmail(string email, string resetCode)
         {
             var message = new MimeMessage();
-            message.Sender = MailboxAddress.Parse("nvanhuy13257@gmail.com"); // Địa chỉ email người gửi, có thể là một địa chỉ tùy ý
-            message.To.Add(MailboxAddress.Parse("jerry.langosh@ethereal.email")); // Địa chỉ email của người nhận
+            message.Sender = MailboxAddress.Parse("nvanhuy1710@gmail.com"); // Địa chỉ email người gửi, có thể là một địa chỉ tùy ý
+            message.To.Add(MailboxAddress.Parse(email)); // Địa chỉ email của người nhận
             message.Subject = "Reset Password Code";
 
             var builder = new BodyBuilder();
@@ -194,7 +194,7 @@ namespace Cinema.Module.User.Service
                 client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
 
                 // Nếu máy chủ SMTP yêu cầu xác thực, hãy cung cấp thông tin đăng nhập
-                client.Authenticate("nvanhuy13257@gmail.com", "-huy17102003");
+                client.Authenticate("nvanhuy1710@gmail.com", "yqnyoqezzufguskc");
 
                 client.Send(message);
                 client.Disconnect(true);
