@@ -21,5 +21,7 @@ namespace Cinema.Module.Account.Service
         void DeleteAccount(int id);
 
         List<AccountDTO> GetAllAccounts();
+
+        void ChangePassword(string oldPassword, string newPassword, int id);
     }
 }

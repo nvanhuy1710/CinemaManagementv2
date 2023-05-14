@@ -43,17 +43,26 @@ namespace Cinema.Module.User.Repository
 
         public List<UserModel> getAllUsers()
         {
-            return _context.Users.Select(p => p).ToList();
+            return _context.Users.Include(p => p.Account).
+                ThenInclude(y => y.Role).Select(p => p).Where(p => p.Account.AccountStatus != Enum.AccountStatus.DELETED).ToList();
         }
 
         public UserModel GetUser(int id)
         {
-            return _context.Users.Where(p => p.Id == id).Single();
+            return _context.Users.Include(p => p.Account).
+                ThenInclude(y => y.Role).Where(p => p.Id == id && p.Account.AccountStatus != Enum.AccountStatus.DELETED).Single();
         }
 
         public UserModel GetUserByEmail(string email)
         {
-            return _context.Users.Where(p => p.Account.Email == email).Single();
+            return _context.Users.Include(p => p.Account).
+                ThenInclude(y => y.Role).Where(p => p.Account.Email == email && p.Account.AccountStatus != Enum.AccountStatus.DELETED).Single();
+        }
+
+        public List<UserModel> GetStaff()
+        {
+            return _context.Users.Include(p => p.Account).
+                ThenInclude(y => y.Role).Where(p => p.Account.Role.Name == "STAFF" && p.Account.AccountStatus != Enum.AccountStatus.DELETED).ToList();
         }
     }
 }

@@ -18,5 +18,7 @@ namespace Cinema.Module.Account.Repository
         void DeleteAccount(int id);
 
         List<AccountModel> GetAllAccounts();
+
+        void ChangePassword(string password, int id);
     }
 }

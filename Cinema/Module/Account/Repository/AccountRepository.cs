@@ -22,6 +22,14 @@ namespace Cinema.Module.Account.Repository
             return accountModel;
         }
 
+        public void ChangePassword(string password, int id)
+        {
+            AccountModel oldAccountModel = _context.Accounts.Where(p => p.Id == id).Single();
+            oldAccountModel.Password = password;
+            _context.Accounts.Update(oldAccountModel);
+            _context.SaveChanges();
+        }
+
         public void DeleteAccount(int id)
         {
             _context.Accounts.Remove(_context.Accounts.Where(p => p.Id == id).Single());
@@ -59,6 +67,7 @@ namespace Cinema.Module.Account.Repository
         {
             AccountModel oldAccountModel = _context.Accounts.Where(p => p.Email == account.Email).Single();
             oldAccountModel.RoleId = account.RoleId;
+            oldAccountModel.AccountStatus = account.AccountStatus;
             _context.Accounts.Update(oldAccountModel);
             _context.SaveChanges();
             return oldAccountModel;

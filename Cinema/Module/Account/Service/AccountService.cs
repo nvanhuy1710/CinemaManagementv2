@@ -35,6 +35,13 @@ namespace Cinema.Module.Account.Service
             return _mapper.Map<AccountDTO>(_accountRepository.AddAccount(accountModel));
         }
 
+        public void ChangePassword(string oldPassword, string newPassword, int id)
+        {
+            AccountModel accountModel = _accountRepository.GetAccount(id);
+            if (accountModel.Password != oldPassword) throw new InvalidOperationException("Wrong password");
+            _accountRepository.ChangePassword(newPassword, id);
+        }
+
         public void DeleteAccount(int id)
         {
             AccountModel accountModel = _accountRepository.GetAccount(id);

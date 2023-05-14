@@ -43,7 +43,8 @@ namespace Cinema.Module.User.Service
 
         public void DeleteUser(int id)
         {
-            _accountService.DeleteAccount(_accountService.GetAccount(GetUser(id).Email).Id);
+            UserModel userModel = _userRepository.GetUser(id);
+            _accountService.DeleteAccount(userModel.AccountId);
         }
 
         public List<UserDTO> GetAllUsers()
@@ -77,7 +78,7 @@ namespace Cinema.Module.User.Service
             return userDTO;
         }
 
-        public UserDTO Register(RegisterData registerData)
+        public UserDTO Register(RegisterData registerData, bool isStaff = false)
         {
             if(_accountService.GetAccount(registerData.Email) != null)
             {
@@ -87,7 +88,7 @@ namespace Cinema.Module.User.Service
             {
                 Email = registerData.Email,
                 Password = registerData.Password,
-                RoleName = registerData.Role,
+                RoleName = (isStaff ? "STAFF" : "USER"),
             };
             AccountDTO account = _accountService.AddAccount(accountDTO);
             UserModel userModel = new UserModel
@@ -102,6 +103,24 @@ namespace Cinema.Module.User.Service
             UserDTO userDTO = _mapper.Map<UserDTO>(_userRepository.AddUser(userModel));
             userDTO.RoleName = registerData.Role;
             return userDTO;
+        }
+
+        public List<UserDTO> GetStaff()
+        {
+            List<UserDTO> userDTOs = _userRepository.GetStaff()
+                .Select(user => {
+                    UserDTO userDTO = _mapper.Map<UserDTO>(user);
+                    userDTO.Email = user.Account.Email;
+                    userDTO.RoleName = user.Account.Role.Name;
+                    return userDTO;
+                })
+                .ToList();
+            return userDTOs;
+        }
+
+        public void ChangePassword(PasswordChangeForm form, int userId)
+        {
+            _accountService.ChangePassword(form.oldPassword, form.newPassword, _userRepository.GetUser(userId).AccountId);
         }
     }
 }

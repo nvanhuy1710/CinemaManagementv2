@@ -81,6 +81,47 @@ namespace Cinema.Controllers
             return Ok(newUserDTO);
         }
 
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost("admins/add-staff")]
+        public IActionResult AddStaff([FromBody] RegisterData RegisterData)
+        {
+            RegisterData.Password = HashPassword.HashByPBKDF2(RegisterData.Password);
+            var userDTO = _userService.Register(RegisterData, true);
+            if (userDTO == null) return BadRequest("Email already exist");
+            return Ok();
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost("admins/get-staff")]
+        public IActionResult GetStaff()
+        {
+            return Ok(_userService.GetStaff());
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpDelete("admins/delete-staff/{id}")]
+        public IActionResult DeleteStaff(int id)
+        {
+            _userService.DeleteUser(id);
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpPut("users/change-password")]
+        public IActionResult ChangePassword([FromBody] PasswordChangeForm form)
+        {
+            try
+            {
+                _userService.ChangePassword(form, GetCurrentUser().Id);
+                return NoContent();
+            }
+            catch(InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
         private UserDTO GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

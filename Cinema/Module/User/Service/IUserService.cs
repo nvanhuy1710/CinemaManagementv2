@@ -11,9 +11,13 @@ namespace Cinema.Module.User.Service
 
         UserDTO GetUserByEmail(string username);
 
+        List<UserDTO> GetStaff();
+
+        void ChangePassword(PasswordChangeForm form, int userId);
+
         UserDTO UpdateUser(UserDTO userDTO);
 
-        UserDTO Register(RegisterData registerData);
+        UserDTO Register(RegisterData registerData, bool isStaff = false);
 
         void DeleteUser(int id);
     }

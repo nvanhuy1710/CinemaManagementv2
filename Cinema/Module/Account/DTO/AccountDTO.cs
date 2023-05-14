@@ -1,4 +1,5 @@
-﻿using Cinema.Module.Role.DTO;
+﻿using Cinema.Enum;
+using Cinema.Module.Role.DTO;
 
 namespace Cinema.Module.Account.DTO
 {
@@ -9,6 +10,8 @@ namespace Cinema.Module.Account.DTO
         public string Email { get; set; }
 
         public string Password { get; set; }
+
+        public AccountStatus AccountStatus { get; set; }
 
         public string RoleName { get; set; }
     }

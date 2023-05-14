@@ -1,4 +1,5 @@
 ﻿using Cinema.Model;
+using Newtonsoft.Json;
 
 namespace Cinema.Module.Account.Register
 {
@@ -18,6 +19,7 @@ namespace Cinema.Module.Account.Register
 
         public string Password { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Role { get; set; }
     }
 }

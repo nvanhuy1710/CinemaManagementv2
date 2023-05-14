@@ -12,6 +12,8 @@ namespace Cinema.Module.User.Repository
 
         UserModel UpdateUser(UserModel user);
 
+        List<UserModel> GetStaff();
+
         void DeleteUser(int id);
 
         UserModel GetUserByEmail(string email);
