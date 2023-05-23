@@ -4,7 +4,7 @@ namespace Cinema.Module.Show.Service
 {
     public interface IShowService
     {
-        ShowDTO AddShow(ShowDTO showDTO);
+        List<ShowDTO> AddShow(List<ShowDTO> showDTOs);
 
         ShowDTO UpdateShow(ShowDTO showDTO);
 

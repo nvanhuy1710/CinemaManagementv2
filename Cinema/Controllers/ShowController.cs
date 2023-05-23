@@ -19,12 +19,13 @@ namespace Cinema.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpPost("show")]
-        public IActionResult AddShow([FromBody] ShowDTO showDTO)
+        public IActionResult AddShow([FromBody] List<ShowDTO> showDTOs)
         {
             try
             {
-                ShowDTO result = _showService.AddShow(showDTO);
-                return CreatedAtAction(nameof(GetShow), new { id = showDTO.Id }, showDTO);
+                List<ShowDTO> result = _showService.AddShow(showDTOs);
+                List<int> ids = result.Select(p => p.Id).ToList();
+                return CreatedAtAction(nameof(GetShow), new { id = ids }, result);
             } catch (InvalidOperationException ex) 
             {
                 return BadRequest(ex.Message);
@@ -50,7 +51,15 @@ namespace Cinema.Controllers
         [HttpGet("show/{id}")]
         public IActionResult GetShow(int id)
         {
-            return Ok(_showService.GetShow(id));
+            ShowDTO show = _showService.GetShow(id);
+            if (show != null)
+            {
+                return Ok(show);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [AllowAnonymous]
