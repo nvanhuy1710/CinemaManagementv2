@@ -79,6 +79,11 @@ namespace Cinema.Module.Show.Service
             return _showRepository.GetShowByInfor(filmId, roomId, date).Select(p => p.Select(y => MapModelToDTO(y)).ToList()).ToList();
         }
 
+        public List<ShowDTO> GetShowInTime(DateTime startDate, DateTime endDate)
+        {
+            return _showRepository.GetShowInTime(startDate.Date, endDate.Date).Select(p => MapModelToDTO(p)).ToList();
+        }
+
         public ShowDTO UpdateShow(ShowDTO showDTO)
         {
             FilmDTO filmDTO = _filmService.GetFilm(showDTO.FilmId);

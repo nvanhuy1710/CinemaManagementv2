@@ -59,5 +59,12 @@ namespace Cinema.Controllers
         {
             return Ok(_showService.GetShowByInfor(filmId, roomId, date));
         }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("show/time")]
+        public IActionResult GetShowInTime(DateTime startDate, DateTime endDate)
+        {
+            return Ok(_showService.GetShowInTime(startDate, endDate));
+        }
     }
 }
