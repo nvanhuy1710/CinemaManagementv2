@@ -6,9 +6,7 @@ namespace Cinema.Module.Bill.Repository
     {
         BillModel AddBill(BillModel model);
 
-        List<BillModel> GetBillByUserId(int userId);
-
-        List<BillModel> GetBillByDate(DateTime startDate, DateTime endDate);
+        List<BillModel> GetBillByDate(DateTime startDate, DateTime endDate, int userId = 0);
 
         List<BillModel> GetBill(int id);
 

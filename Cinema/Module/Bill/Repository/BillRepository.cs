@@ -23,13 +23,6 @@ namespace Cinema.Module.Bill.Repository
             return entityEntry.Entity;
         }
 
-        public List<BillModel> GetBillByUserId(int userId)
-        {
-            return _context.Bills.Include(p => p.ReservationModels).
-                ThenInclude(y => y.SeatModel).Include(p => p.FoodOrderModels).
-                ThenInclude(y => y.FoodModel).Where(p => p.UserId == userId).ToList();
-        }
-
         public List<BillModel> GetBill(int id)
         {
             return _context.Bills.Include(p => p.ReservationModels).Include(p => p.FoodOrderModels).
@@ -44,14 +37,16 @@ namespace Cinema.Module.Bill.Repository
             _context.SaveChanges();
         }
 
-        public List<BillModel> GetBillByDate(DateTime startDate, DateTime endDate)
+        public List<BillModel> GetBillByDate(DateTime startDate, DateTime endDate, int userId = 0)
         {
-            return _context.Bills.Include(p => p.ReservationModels).
+            List<BillModel> bills =  _context.Bills.Include(p => p.ReservationModels).
                 ThenInclude(y => y.ShowModel).ThenInclude(z => z.Film).
                 Include(p => p.ReservationModels).ThenInclude(p => p.SeatModel).
                 Include(p => p.FoodOrderModels).ThenInclude(y => y.FoodModel).
                 Where(p => p.DatePurchased.Date >= startDate.Date &&
                     p.DatePurchased.Date <= endDate.Date).ToList();
+            if(userId != 0) return bills.Where(p => p.UserId == userId).ToList();
+            return bills;
         }
     }
 }

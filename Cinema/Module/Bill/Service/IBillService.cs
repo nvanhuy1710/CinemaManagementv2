@@ -7,9 +7,7 @@ namespace Cinema.Module.Bill.Service
     {
         BillDTO AddBill(BillDTO bill);
 
-        List<BillDTO> GetBillByUserId(int userId);
-
-        List<BillDTO> GetBillByDate(DateTime startDate, DateTime endDate);
+        List<BillDTO> GetBillByDate(DateTime startDate, DateTime endDate, int userId = 0);
 
         void Refund(int showId);
     }

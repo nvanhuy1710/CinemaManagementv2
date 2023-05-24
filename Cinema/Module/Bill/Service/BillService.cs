@@ -103,23 +103,13 @@ namespace Cinema.Module.Bill.Service
             return _mapper.Map<BillDTO>(result);
         }
 
-        public List<BillDTO> GetBillByDate(DateTime startDate, DateTime endDate)
+        public List<BillDTO> GetBillByDate(DateTime startDate, DateTime endDate, int userId = 0)
         {
             return _billRepository.GetBillByDate(startDate, endDate).Select(p =>
             {
                 BillDTO billDTO = _mapper.Map<BillDTO>(p);
                 billDTO.FoodOrderDTOs = p.FoodOrderModels.Select(y => _mapper.Map<FoodOrderDTO>(y)).ToList();
                 billDTO.ShowDTO = _mapper.Map<ShowDTO>(p.ReservationModels.First().ShowModel);
-                return billDTO;
-            }).ToList();
-        }
-
-        public List<BillDTO> GetBillByUserId(int userId)
-        {
-            return _billRepository.GetBillByUserId(userId).Select(p =>
-            {
-                BillDTO billDTO = _mapper.Map<BillDTO>(p);
-                billDTO.FoodOrderDTOs = p.FoodOrderModels.Select(y => _mapper.Map<FoodOrderDTO>(y)).ToList();
                 return billDTO;
             }).ToList();
         }

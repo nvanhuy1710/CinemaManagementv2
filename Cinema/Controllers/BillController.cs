@@ -44,12 +44,12 @@ namespace Cinema.Controllers
         }
 
         [HttpGet("bill")]
-        public IActionResult GetCurrentUserBills()
+        public IActionResult GetCurrentUserBills(DateTime startDate, DateTime endDate)
         {
             UserDTO userDTO = GetCurrentUser();
             if(userDTO != null)
             {
-                List<BillDTO> billDTOs = _billService.GetBillByUserId(userDTO.Id);
+                List<BillDTO> billDTOs = _billService.GetBillByDate(startDate.Date, endDate.Date, userDTO.Id);
                 return Ok(billDTOs);
             }
             return Unauthorized();
