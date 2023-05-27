@@ -16,8 +16,6 @@ namespace Cinema.Module.Show.DTO
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public DateTime EndTime { get; set; }
 
-        public List<DateTime> StartTimes { get; set; }
-
         public string? FilmName { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

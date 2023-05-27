@@ -1,6 +1,7 @@
 ﻿using Cinema.Enum;
 using Cinema.Model;
 using Cinema.Module.FoodOrder.DTO;
+using Cinema.Module.Reservation.DTO;
 using Cinema.Module.Show.DTO;
 using Cinema.Module.User.DTO;
 using Newtonsoft.Json;
@@ -26,7 +27,7 @@ namespace Cinema.Module.Bill.DTO
 
         public List<int> SeatIds { get; set; }
 
-        public List<ReservationModel> ReservationModels { get; set; }
+        public List<ReservationDTO> Reservations { get; set; }
 
         public List<FoodOrderDTO>? FoodOrderDTOs { get; set; }
 

@@ -16,8 +16,6 @@ namespace Cinema.Model
 
         public DateTime DatePurchased { get; set; }
 
-        public int TotalCost { get; set; }
-
         [EnumDataType(typeof(string))]
         public BillStatus BillStatus { get; set; }
 

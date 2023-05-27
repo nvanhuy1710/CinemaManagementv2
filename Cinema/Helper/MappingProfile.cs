@@ -6,6 +6,7 @@ using Cinema.Module.Film.DTO;
 using Cinema.Module.Food.DTO;
 using Cinema.Module.FoodOrder.DTO;
 using Cinema.Module.Genre.DTO;
+using Cinema.Module.Reservation.DTO;
 using Cinema.Module.Role.DTO;
 using Cinema.Module.Room.DTO;
 using Cinema.Module.Seat.DTO;
@@ -50,6 +51,7 @@ namespace Cinema.Helper
             CreateMap<FoodOrderDTO, FoodOrderModel>();
             CreateMap<BillDTO, BillModel>();
             CreateMap<BillModel, BillDTO>().ForMember(dest => dest.FoodOrderDTOs, opt => opt.MapFrom(src => src.FoodOrderModels));
+            CreateMap<ReservationModel, ReservationDTO>();
         }
     }
 }

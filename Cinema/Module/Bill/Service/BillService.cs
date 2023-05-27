@@ -111,7 +111,7 @@ namespace Cinema.Module.Bill.Service
             {
                 BillDTO billDTO = _mapper.Map<BillDTO>(p);
                 billDTO.FoodOrderDTOs = p.FoodOrderModels.Select(y => _mapper.Map<FoodOrderDTO>(y)).ToList();
-                billDTO.ShowDTO = _showService.GetShow(p.ReservationModels.First().ShowModel.Id);
+                billDTO.ShowDTO = _showService.GetShow(p.ReservationModels.First().ShowId);
                 billDTO.TotalCost = GetTotalCost(p);
                 return billDTO;
             }).ToList();

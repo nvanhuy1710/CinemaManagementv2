@@ -2,6 +2,7 @@
 using Cinema.Module.Bill.DTO;
 using Cinema.Module.Bill.Service;
 using Cinema.Module.FoodOrder.DTO;
+using Cinema.Module.Reservation.DTO;
 using Cinema.Module.Seat.DTO;
 using Cinema.Module.Seat.Service;
 using Cinema.Module.Show.Service;
@@ -41,9 +42,9 @@ namespace Cinema.Module.Statistic.Service
                 {
                     if(billDTO.BillStatus != Enum.BillStatus.REFUNDED)
                     {
-                        seatSolds += billDTO.ReservationModels.Count;
+                        seatSolds += billDTO.Reservations.Count;
                         monthRevenue += billDTO.TotalCost;
-                        foreach(ReservationModel reservation in billDTO.ReservationModels)
+                        foreach(ReservationDTO reservation in billDTO.Reservations)
                         {
                        
                             if(statisticDTO.SeatRevenue.ContainsKey(reservation.SeatTypeName))
@@ -62,13 +63,13 @@ namespace Cinema.Module.Statistic.Service
                         {
                             int Revenue = FilmRevenueInMonth[key];
 
-                            Revenue += billDTO.ReservationModels.Count;
+                            Revenue += billDTO.Reservations.Count;
 
                             FilmRevenueInMonth[key] = Revenue;
                         }
                         else
                         {
-                            FilmRevenueInMonth.Add(key, billDTO.ReservationModels.Count);
+                            FilmRevenueInMonth.Add(key, billDTO.Reservations.Count);
                         }
                         foreach(FoodOrderDTO foodOrder in billDTO.FoodOrderDTOs)
                         {
@@ -77,7 +78,7 @@ namespace Cinema.Module.Statistic.Service
                     }
                     else
                     {
-                        seatRefunds += billDTO.ReservationModels.Count;
+                        seatRefunds += billDTO.Reservations.Count;
                     }
                 }
                 statisticDTO.MonthlyRevenue.Add(monthRevenue);
