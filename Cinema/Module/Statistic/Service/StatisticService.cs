@@ -41,20 +41,20 @@ namespace Cinema.Module.Statistic.Service
                 {
                     if(billDTO.BillStatus != Enum.BillStatus.REFUNDED)
                     {
-                        seatSolds += billDTO.SeatIds.Count;
+                        seatSolds += billDTO.ReservationModels.Count;
                         monthRevenue += billDTO.TotalCost;
-                        foreach(int seatId in billDTO.SeatIds)
+                        foreach(ReservationModel reservation in billDTO.ReservationModels)
                         {
-                            SeatDTO seatDTO = _seatService.GetSeat(seatId);
-                            if(statisticDTO.SeatRevenue.ContainsKey(seatDTO.SeatTypeDTO.Name))
+                       
+                            if(statisticDTO.SeatRevenue.ContainsKey(reservation.SeatTypeName))
                             {
-                                int revenue = statisticDTO.SeatRevenue[seatDTO.SeatTypeDTO.Name];
-                                revenue += seatDTO.SeatTypeDTO.Cost;
-                                statisticDTO.SeatRevenue[seatDTO.SeatTypeDTO.Name] = revenue;
+                                int revenue = statisticDTO.SeatRevenue[reservation.SeatTypeName];
+                                revenue += reservation.Cost;
+                                statisticDTO.SeatRevenue[reservation.SeatTypeName] = revenue;
                             }
                             else
                             {
-                                statisticDTO.SeatRevenue.Add(seatDTO.SeatTypeDTO.Name, seatDTO.SeatTypeDTO.Cost);
+                                statisticDTO.SeatRevenue.Add(reservation.SeatTypeName, reservation.Cost);
                             }
                         }
                         string key = billDTO.ShowDTO.FilmName;
@@ -62,13 +62,13 @@ namespace Cinema.Module.Statistic.Service
                         {
                             int Revenue = FilmRevenueInMonth[key];
 
-                            Revenue += billDTO.SeatIds.Count;
+                            Revenue += billDTO.ReservationModels.Count;
 
                             FilmRevenueInMonth[key] = Revenue;
                         }
                         else
                         {
-                            FilmRevenueInMonth.Add(key, billDTO.SeatIds.Count);
+                            FilmRevenueInMonth.Add(key, billDTO.ReservationModels.Count);
                         }
                         foreach(FoodOrderDTO foodOrder in billDTO.FoodOrderDTOs)
                         {
@@ -77,7 +77,7 @@ namespace Cinema.Module.Statistic.Service
                     }
                     else
                     {
-                        seatRefunds += billDTO.SeatIds.Count;
+                        seatRefunds += billDTO.ReservationModels.Count;
                     }
                 }
                 statisticDTO.MonthlyRevenue.Add(monthRevenue);
