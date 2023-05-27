@@ -17,6 +17,10 @@ namespace Cinema.Model
 
         public int ShowId { get; set; }
 
+        public string SeatTypeName { get; set; }
+
+        public int Cost { get; set; }
+
         [ForeignKey("BillId")]
         public virtual BillModel BillModel { get; set; }
 

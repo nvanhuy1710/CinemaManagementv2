@@ -69,10 +69,10 @@ namespace Cinema.Module.Bill.Service
             }
             bill.DatePurchased = DateTime.Now.Date;
             int totalCost = 0;
-            foreach(int seatId in bill.SeatIds)
-            {
-                totalCost += _seatService.GetSeat(seatId).SeatTypeDTO.Cost;
-            }
+            //foreach(int seatId in bill.SeatIds)
+            //{
+            //    totalCost += _seatService.GetSeat(seatId).SeatTypeDTO.Cost;
+            //}
             if(bill.FoodOrderDTOs != null)
             {
                 foreach (FoodOrderDTO foodOrderDTO in bill.FoodOrderDTOs)
@@ -96,7 +96,9 @@ namespace Cinema.Module.Bill.Service
                 {
                     SeatId = seatId,
                     BillId = result.Id,
-                    ShowId = bill.ShowId
+                    ShowId = bill.ShowId,
+                    Cost = _seatService.GetSeat(seatId).SeatTypeDTO.Cost,
+                    SeatTypeName = _seatService.GetSeat(seatId).SeatTypeDTO.Name
                 };
                 _reservationRepository.AddReservation(reservationModel);
             }
@@ -109,7 +111,8 @@ namespace Cinema.Module.Bill.Service
             {
                 BillDTO billDTO = _mapper.Map<BillDTO>(p);
                 billDTO.FoodOrderDTOs = p.FoodOrderModels.Select(y => _mapper.Map<FoodOrderDTO>(y)).ToList();
-                billDTO.ShowDTO = _mapper.Map<ShowDTO>(p.ReservationModels.First().ShowModel);
+                billDTO.ShowDTO = _showService.GetShow(p.ReservationModels.First().ShowModel.Id);
+                billDTO.TotalCost = GetTotalCost(p);
                 return billDTO;
             }).ToList();
         }
@@ -129,6 +132,16 @@ namespace Cinema.Module.Bill.Service
                 _billRepository.Refund(billId);
             }
             _showService.DeleteShow(showId);
+        }
+
+        private int GetTotalCost(BillModel billModel)
+        {
+            int total = 0;
+            foreach(ReservationModel reservation in billModel.ReservationModels)
+            {
+                total += reservation.Cost;
+            }
+            return total;
         }
     }
 }
