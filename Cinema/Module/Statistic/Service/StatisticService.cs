@@ -43,11 +43,10 @@ namespace Cinema.Module.Statistic.Service
                     if(billDTO.BillStatus != Enum.BillStatus.REFUNDED)
                     {
                         seatSolds += billDTO.Reservations.Count;
-                        monthRevenue += billDTO.TotalCost;
                         foreach(ReservationDTO reservation in billDTO.Reservations)
                         {
-                       
-                            if(statisticDTO.SeatRevenue.ContainsKey(reservation.SeatTypeName))
+                            monthRevenue += reservation.Cost;
+                            if (statisticDTO.SeatRevenue.ContainsKey(reservation.SeatTypeName))
                             {
                                 int revenue = statisticDTO.SeatRevenue[reservation.SeatTypeName];
                                 revenue += reservation.Cost;
@@ -88,6 +87,16 @@ namespace Cinema.Module.Statistic.Service
                 statisticDTO.FoodRevenue.Add(FoodRevenue);               
             }
             return statisticDTO;
+        }
+
+        private int GetToTal(BillDTO billDTO)
+        {
+            int total = 0;
+            foreach(ReservationDTO reservation in billDTO.Reservations)
+            {
+                total += reservation.Cost;
+            }
+            return total;
         }
     }
 }
