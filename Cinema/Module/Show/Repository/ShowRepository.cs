@@ -33,6 +33,11 @@ namespace Cinema.Module.Show.Repository
             return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.Id == id && !p.IsDeleted).Single();
         }
 
+        public ShowModel GetShowForStatistic(int id)
+        {
+            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.Id == id).Single();
+        }
+
         public List<ShowModel> GetShowInTime(DateTime startDate, DateTime endDate)
         {
             return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.StartTime.Date >= DateTime.Now.Date && p.StartTime.Date >= startDate && p.StartTime.Date <= endDate && !p.IsDeleted).ToList();

@@ -12,6 +12,8 @@ namespace Cinema.Module.Show.Repository
 
         ShowModel GetShow(int id);
 
+        ShowModel GetShowForStatistic(int id);
+
         List<List<ShowModel>> GetShowByInfor(int filmId, int roomId, DateTime date);
 
         List<ShowModel> GetShowInTime(DateTime startDate, DateTime endDate);
