@@ -111,9 +111,9 @@ namespace Cinema.Module.Show.Service
             {
                 foreach (ShowDTO show in shows)
                 {
-                    if (((showDTO.StartTime <= show.EndTime && showDTO.StartTime >= show.StartTime) ||
+                    if ((((showDTO.StartTime <= show.EndTime && showDTO.StartTime >= show.StartTime) ||
                         (showDTO.EndTime <= show.EndTime && showDTO.EndTime >= show.StartTime)) &&
-                        showDTO.StartTime.Date == show.EndTime.Date)
+                        showDTO.StartTime.Date == show.EndTime.Date) && showDTO.Id != show.Id)
                     {
                         throw new InvalidOperationException("This room has schedule conflict");
                     }
