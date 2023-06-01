@@ -6,6 +6,7 @@ using Cinema.Module.Film.Service;
 using Cinema.Module.Food.Service;
 using Cinema.Module.FoodOrder.DTO;
 using Cinema.Module.FoodOrder.Service;
+using Cinema.Module.Reservation.DTO;
 using Cinema.Module.Reservation.Repository;
 using Cinema.Module.Room.Service;
 using Cinema.Module.Seat.DTO;
@@ -113,6 +114,7 @@ namespace Cinema.Module.Bill.Service
                 billDTO.FoodOrderDTOs = p.FoodOrderModels.Select(y => _mapper.Map<FoodOrderDTO>(y)).ToList();
                 billDTO.ShowDTO = _showService.GetShow(p.ReservationModels.First().ShowId);
                 billDTO.TotalCost = GetTotalCost(p);
+                billDTO.Reservations = p.ReservationModels.Select(y => _mapper.Map<ReservationDTO>(y)).ToList();
                 return billDTO;
             }).ToList();
         }

@@ -27,7 +27,8 @@ namespace Cinema.Module.Bill.DTO
 
         public List<int> SeatIds { get; set; }
 
-        public List<ReservationDTO> Reservations { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public List<ReservationDTO>? Reservations { get; set; }
 
         public List<FoodOrderDTO>? FoodOrderDTOs { get; set; }
 
