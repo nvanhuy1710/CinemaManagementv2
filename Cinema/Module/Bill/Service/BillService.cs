@@ -69,19 +69,6 @@ namespace Cinema.Module.Bill.Service
                 throw new ArgumentException("User not enough old!");
             }
             bill.DatePurchased = DateTime.Now.Date;
-            int totalCost = 0;
-            //foreach(int seatId in bill.SeatIds)
-            //{
-            //    totalCost += _seatService.GetSeat(seatId).SeatTypeDTO.Cost;
-            //}
-            if(bill.FoodOrderDTOs != null)
-            {
-                foreach (FoodOrderDTO foodOrderDTO in bill.FoodOrderDTOs)
-                {
-                    totalCost += _foodService.GetFood(foodOrderDTO.FoodId).Cost * foodOrderDTO.Count;
-                }
-            }
-            bill.TotalCost = totalCost;
             BillModel result = _billRepository.AddBill(_mapper.Map<BillModel>(bill));
             if(bill.FoodOrderDTOs != null)
             {
@@ -93,13 +80,14 @@ namespace Cinema.Module.Bill.Service
             }
             foreach(int seatId in bill.SeatIds)
             {
+                SeatDTO seat = _seatService.GetSeat(seatId);
                 ReservationModel reservationModel = new ReservationModel
                 {
                     SeatId = seatId,
                     BillId = result.Id,
                     ShowId = bill.ShowId,
-                    Cost = _seatService.GetSeat(seatId).SeatTypeDTO.Cost,
-                    SeatTypeName = _seatService.GetSeat(seatId).SeatTypeDTO.Name
+                    Cost = seat.SeatTypeDTO.Cost,
+                    SeatTypeName = seat.SeatTypeDTO.Name
                 };
                 _reservationRepository.AddReservation(reservationModel);
             }

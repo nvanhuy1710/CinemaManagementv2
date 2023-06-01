@@ -43,9 +43,9 @@ namespace Cinema.Module.Statistic.Service
                     if(billDTO.BillStatus != Enum.BillStatus.REFUNDED)
                     {
                         seatSolds += billDTO.Reservations.Count;
+                        monthRevenue += billDTO.TotalCost;
                         foreach(ReservationDTO reservation in billDTO.Reservations)
                         {
-                            monthRevenue += reservation.Cost;
                             if (statisticDTO.SeatRevenue.ContainsKey(reservation.SeatTypeName))
                             {
                                 int revenue = statisticDTO.SeatRevenue[reservation.SeatTypeName];
