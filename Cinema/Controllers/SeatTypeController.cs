@@ -32,14 +32,14 @@ namespace Cinema.Controllers
             return Ok(_seatTypeService.UpdateSeatType(seatType));
         }
 
-        [Authorize(Roles = "ADMIN")]
+        [Authorize]
         [HttpGet("seat-type/{id}")]
         public IActionResult GetSeatType(int id)
         {
             return Ok(_seatTypeService.GetSeatType(id));
         }
 
-        [Authorize(Roles = "ADMIN")]
+        [Authorize]
         [HttpGet("seat-type")]
         public IActionResult GetSeatTypes()
         {
