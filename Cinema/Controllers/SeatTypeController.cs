@@ -7,7 +7,6 @@ namespace Cinema.Controllers
 {
     [Route("api/")]
     [ApiController]
-    [Authorize(Roles = "ADMIN")]
     public class SeatTypeController : ControllerBase
     {
         private readonly ISeatTypeService _seatTypeService;
