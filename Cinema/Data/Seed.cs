@@ -47,9 +47,9 @@ namespace Cinema.Data
             {
                 dataContext.SeatTypes.AddRange(new SeatTypeModel[]
                 {
-                    new SeatTypeModel() {Name = "Thường", Cost = 40000,},
                     new SeatTypeModel() {Name = "VIP", Cost = 50000,},
                     new SeatTypeModel() {Name = "Đôi", Cost = 70000,},
+                    new SeatTypeModel() {Name = "Thường", Cost = 40000,},
                 });
                 dataContext.SaveChanges();
             }
