@@ -84,6 +84,14 @@ namespace Cinema.Module.Film.Repository
                     throw new InvalidOperationException("The movie has a schedule but hasn't shown yet");
                 }
             }
+            if(OldFilm.Length != film.Length)
+            {
+                if (_context.Films.Include(p => p.ShowModels).Where(p => p.Id == film.Id).
+                    Any(p => p.ShowModels.Any(y => y.StartTime.Date >= DateTime.Now.Date && !y.IsDeleted)))
+                {
+                    throw new InvalidOperationException("Can't update length when have show");
+                }
+            }
             OldFilm.Name = film.Name;
             OldFilm.Country = film.Country;
             OldFilm.Length = film.Length;

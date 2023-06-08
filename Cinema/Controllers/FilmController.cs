@@ -87,8 +87,16 @@ namespace Cinema.Controllers
         [HttpPut("film")]
         public IActionResult UpdateFilm([FromBody] FilmDTO filmDTO)
         {
-            var film = _filmService.UpdateFilm(filmDTO);
-            return Ok(film);
+            try
+            {
+                var film = _filmService.UpdateFilm(filmDTO);
+                return Ok(film);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [Authorize(Roles = "ADMIN")]
