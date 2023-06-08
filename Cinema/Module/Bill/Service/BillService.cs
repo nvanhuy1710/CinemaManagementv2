@@ -96,7 +96,7 @@ namespace Cinema.Module.Bill.Service
 
         public List<BillDTO> GetBillByDate(DateTime startDate, DateTime endDate, int userId = 0)
         {
-            return _billRepository.GetBillByDate(startDate, endDate).Select(p =>
+            return _billRepository.GetBillByDate(startDate, endDate, userId).Select(p =>
             {
                 BillDTO billDTO = _mapper.Map<BillDTO>(p);
                 billDTO.FoodOrderDTOs = p.FoodOrderModels.Select(y => _mapper.Map<FoodOrderDTO>(y)).ToList();
