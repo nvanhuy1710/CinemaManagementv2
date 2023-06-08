@@ -58,7 +58,7 @@ namespace Cinema.Module.Film.Repository
         public List<FilmModel> GetFilms(string name)
         {
             return _context.Films.Include(p => p.FilmGenreModels).ThenInclude(y => y.Genre).
-                Where(p => p.Name.ToLower().Contains(name.ToLower())).ToList();
+                Where(p => p.Name.ToLower().Contains(name.ToLower()) && p.FilmStatus != Enum.FilmStatus.DELETED).ToList();
         }
 
         public List<FilmModel> GetFilms()
