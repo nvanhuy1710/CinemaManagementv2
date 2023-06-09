@@ -205,8 +205,14 @@ namespace Cinema.Module.Film.Service
         }
         private string RemoveSpecialCharacters(string str)
         {
+            // Danh sách các ký tự tiếng Việt có dấu và không dấu muốn giữ nguyên
+            string vietnameseCharacters = "áàảãạâấầẩẫậăắằẳẵặđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ" +
+                                          "ÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶĐÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴ";
 
-            string result = Regex.Replace(str, @"[^0-9a-zA-Z]+", "-");
+            // Tạo biểu thức chính quy để chỉ thay thế các ký tự đặc biệt khỏi chuỗi
+            string pattern = @"[^0-9a-zA-Z" + vietnameseCharacters + "]+";
+
+            string result = Regex.Replace(str, pattern, "-");
             result = Regex.Replace(result, @"-+", "-");
             result = result.Trim('-');
 
