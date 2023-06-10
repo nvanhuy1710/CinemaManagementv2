@@ -14,6 +14,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using Org.BouncyCastle.Crypto.Macs;
+using System;
 using System.Security.Claims;
 using System.Transactions;
 
@@ -164,7 +165,9 @@ namespace Cinema.Module.User.Service
 
         private string GenerateNewPassword()
         {
-            return Guid.NewGuid().ToString("N").Substring(0, 8);
+            var random = new Random();
+            string newChar = Guid.NewGuid().ToString("N").Substring(1, 8);
+            return random.Next(0, 9).ToString() + newChar;
         }
 
         private void SendNewPassEmail(string email, string newPassword)
