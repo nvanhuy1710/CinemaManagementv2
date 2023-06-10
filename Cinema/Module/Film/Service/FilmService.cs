@@ -54,11 +54,11 @@ namespace Cinema.Module.Film.Service
         {
             filmDTO.ReleaseDate = filmDTO.ReleaseDate.Date;
             FilmModel oldFilm = _filmRepository.GetFilm(filmDTO.Id);
-            if(oldFilm.Name != filmDTO.Name || oldFilm.Director != filmDTO.Director)
+            string oldPath = Path.GetDirectoryName(oldFilm.PosterUrl);
+            string newFullPath = GetFolderPath(RemoveSpecialCharacters(filmDTO.Name) + "_" + RemoveSpecialCharacters(filmDTO.Director));
+            string newPath = newFullPath.Substring(newFullPath.IndexOf("wwwroot"));
+            if(!newPath.Equals(oldPath))
             {
-                string oldPath = Path.GetDirectoryName(oldFilm.PosterUrl);
-                string newFullPath = GetFolderPath(RemoveSpecialCharacters(filmDTO.Name) + "_" + RemoveSpecialCharacters(filmDTO.Director));
-                string newPath = newFullPath.Substring(newFullPath.IndexOf("wwwroot"));
                 if (Directory.Exists(oldPath))
                 {
                     Directory.Move(oldPath, newFullPath);
