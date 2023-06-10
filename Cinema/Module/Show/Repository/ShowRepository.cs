@@ -62,12 +62,12 @@ namespace Cinema.Module.Show.Repository
 
             if (filmId != 0)
             {
-                query = query.Where(p => p.FilmId == filmId && p.StartTime.Date >= DateTime.Now.Date);
+                query = query.Where(p => p.FilmId == filmId && p.StartTime.Date >= DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay);
             }
 
             if (roomId != 0)
             {
-                query = query.Where(p => p.RoomId == roomId && p.StartTime.Date >= DateTime.Now.Date);
+                query = query.Where(p => p.RoomId == roomId && p.StartTime.Date >= DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay);
             }
 
             if(date != DateTime.MinValue)
