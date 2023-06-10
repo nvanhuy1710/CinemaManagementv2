@@ -57,7 +57,7 @@ namespace Cinema.Module.Film.Service
             if(oldFilm.Name != filmDTO.Name || oldFilm.Director != filmDTO.Director)
             {
                 string oldPath = Path.GetDirectoryName(oldFilm.PosterUrl);
-                string newFullPath = GetFolderPath(filmDTO.Name.Replace(" ", string.Empty) + "_" + filmDTO.Director.Replace(" ", string.Empty));
+                string newFullPath = GetFolderPath(RemoveSpecialCharacters(filmDTO.Name) + "_" + RemoveSpecialCharacters(filmDTO.Director));
                 string newPath = newFullPath.Substring(newFullPath.IndexOf("wwwroot"));
                 if (Directory.Exists(oldPath))
                 {
@@ -212,8 +212,8 @@ namespace Cinema.Module.Film.Service
             // Tạo biểu thức chính quy để chỉ thay thế các ký tự đặc biệt khỏi chuỗi
             string pattern = @"[^0-9a-zA-Z" + vietnameseCharacters + "]+";
 
-            string result = Regex.Replace(str, pattern, "-");
-            result = Regex.Replace(result, @"-+", "-");
+            string result = Regex.Replace(str, pattern, "");
+            result = Regex.Replace(result, @"-+", "");
             result = result.Trim('-');
 
             return result;
