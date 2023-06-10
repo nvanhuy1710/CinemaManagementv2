@@ -166,8 +166,8 @@ namespace Cinema.Module.User.Service
         private string GenerateNewPassword()
         {
             var random = new Random();
-            string newChar = Guid.NewGuid().ToString("N").Substring(1, 8);
-            return random.Next(0, 9).ToString() + newChar;
+            string newChar = Guid.NewGuid().ToString("N").Substring(2, 8);
+            return random.Next(0, 9).ToString() + "a" + newChar;
         }
 
         private void SendNewPassEmail(string email, string newPassword)
