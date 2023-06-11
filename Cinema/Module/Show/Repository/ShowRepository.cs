@@ -40,7 +40,7 @@ namespace Cinema.Module.Show.Repository
 
         public List<ShowModel> GetShowInTime(DateTime startDate, DateTime endDate)
         {
-            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => (p.StartTime.Date > DateTime.Now.Date || (p.StartTime.Date == DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay)) && !p.IsDeleted).ToList();
+            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => (p.StartTime.Date >= startDate.Date && p.EndTime.Date <= endDate.Date) && (p.StartTime.Date > DateTime.Now.Date || (p.StartTime.Date == DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay)) && !p.IsDeleted).ToList();
         }
 
         public ShowModel UpdateShow(ShowModel model)
