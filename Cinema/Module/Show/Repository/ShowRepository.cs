@@ -40,7 +40,7 @@ namespace Cinema.Module.Show.Repository
 
         public List<ShowModel> GetShowInTime(DateTime startDate, DateTime endDate)
         {
-            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => p.StartTime.Date >= DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay && p.StartTime.Date >= startDate && p.StartTime.Date <= endDate && !p.IsDeleted).ToList();
+            return _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => (p.StartTime.Date > DateTime.Now.Date || (p.StartTime.Date == DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay)) && !p.IsDeleted).ToList();
         }
 
         public ShowModel UpdateShow(ShowModel model)
@@ -58,16 +58,16 @@ namespace Cinema.Module.Show.Repository
 
         public List<List<ShowModel>> GetShowByInfor(int filmId, int roomId, DateTime date)
         {
-            IQueryable<ShowModel> query = _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => !p.IsDeleted);
+            IQueryable<ShowModel> query = _context.Shows.Include(p => p.Film).Include(p => p.Room).Where(p => !p.IsDeleted && (p.StartTime.Date > DateTime.Now.Date || (p.StartTime.Date == DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay)));
 
             if (filmId != 0)
             {
-                query = query.Where(p => p.FilmId == filmId && p.StartTime.Date >= DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay);
+                query = query.Where(p => p.FilmId == filmId);
             }
 
             if (roomId != 0)
             {
-                query = query.Where(p => p.RoomId == roomId && p.StartTime.Date >= DateTime.Now.Date && p.StartTime.TimeOfDay >= DateTime.Now.TimeOfDay);
+                query = query.Where(p => p.RoomId == roomId);
             }
 
             if(date != DateTime.MinValue)
