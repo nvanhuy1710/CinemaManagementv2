@@ -131,6 +131,10 @@ namespace Cinema.Module.Bill.Service
             {
                 total += reservation.Cost;
             }
+            foreach(FoodOrderModel foodOrderModel in billModel.FoodOrderModels)
+            {
+                total += foodOrderModel.Count * foodOrderModel.FoodModel.Cost;
+            }
             return total;
         }
     }
